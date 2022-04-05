@@ -1,5 +1,7 @@
 # OpenDog
 
+![logo.png](https://github.com/SheepHuan/OpenDog/blob/main/res/logo.png)
+
 ### 项目原型
 
 https://perfdog.qq.com/
