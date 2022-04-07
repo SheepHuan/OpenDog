@@ -21,10 +21,10 @@ public class TokenServiceImpl implements TokenService {
     private final static long longValidTime = 30 * 60 * 1000;
     private final static long shortValidTime = 5 * 60 * 1000;
 
+
     @Override
     public Token allocNewToken(int uid) {
 
-        //先检查有没有这个uid对应的token
         //先检查有没有这个uid对应的token
         Token token = selectToken(uid);
 
@@ -46,6 +46,7 @@ public class TokenServiceImpl implements TokenService {
 
         return token;
     }
+
 
     @Override
     public Token allocTmpToken(int uid) {
@@ -72,18 +73,19 @@ public class TokenServiceImpl implements TokenService {
         return token;
     }
 
+
     @Override
     public boolean checkTokenIsValid(int uid, String md5) {
         Token token = selectToken(uid);
         if (token!=null){
             if (!token.getToken().equals(md5))
                 return false;
-//            System.out.println(String.format("%d,%d", token.getValidTime().getTime(),System.currentTimeMillis()));
             return token.getValidTime().getTime() >= System.currentTimeMillis();
         }else {
             return false;
         }
     }
+
 
     @Override
     public boolean freeToken(int uid, String md5) {
@@ -95,6 +97,7 @@ public class TokenServiceImpl implements TokenService {
             return false;
         }
     }
+
 
     @Override
     public Token updateToken(int uid,long lag, int state) {
@@ -113,6 +116,7 @@ public class TokenServiceImpl implements TokenService {
         }
     }
 
+
     @Override
     public Token selectToken(int uid) {
         Map select = new HashMap<String, Integer>();
@@ -124,7 +128,14 @@ public class TokenServiceImpl implements TokenService {
         return tokens.get(0);
     }
 
-
+    /*
+     * @Author opendog
+     * @Description
+     * 根据当前时间戳生成一个随机token
+     * @Date 2022/4/7 18:56
+     * @Param []
+     * @return java.lang.String
+     **/
     public String makeToken() {
         String token = (System.currentTimeMillis() + new Random().nextInt(999999999)) + "";
         try {
