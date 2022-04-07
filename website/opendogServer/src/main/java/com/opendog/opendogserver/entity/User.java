@@ -46,4 +46,6 @@ public class User implements Serializable {
 
     @TableField(value = "updated_time",fill = FieldFill.UPDATE)
     private Date updatedTime;
+
+
 }

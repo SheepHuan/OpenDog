@@ -12,10 +12,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
 
-
     @Override
-    public void insertUser(String userName, String passwd, String email, String question, String answer) {
-
+    public boolean insertUser(User user) {
+        try{
+            userMapper.insert(user);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     @Override
@@ -24,14 +28,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String login(String userName, String passwd) {
+    public User login(String userName, String passwd) {
         return null;
     }
 
-    @Override
-    public boolean loginOut(String userName, String token) {
-        return false;
-    }
 
     @Override
     public String getSafeQuestion(String userName) {
@@ -39,27 +39,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String checkQuestionAnswer(String userName, String answer) {
+    public boolean checkQuestionAnswer(String userName, String answer) {
+        return false;
+    }
+
+    @Override
+    public boolean resetForgetPassword(String userName, String newPassword) {
+        return false;
+    }
+
+
+    @Override
+    public boolean resetPassword(String userName, String oldPassword, String newPassword) {
+        return false;
+    }
+
+    @Override
+    public User getUserDetail(int uid) {
         return null;
     }
 
     @Override
-    public boolean resetForgetPassword(String userName, String tmpToken, String newPassword) {
-        return false;
-    }
-
-    @Override
-    public boolean resetPassword(String userName, String token, String oldPassword, String newPassword) {
-        return false;
-    }
-
-    @Override
-    public String getUserDetail(String userName, String token) {
+    public User updateUserDetail(String userName, String passwd, String email, String question, String answer) {
         return null;
-    }
-
-    @Override
-    public boolean updateUserDetail(String userName, String passwd, String email, String question, String answer) {
-        return false;
     }
 }
