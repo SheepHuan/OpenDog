@@ -12,8 +12,8 @@ public class CaseServiceImpl implements CaseService {
 
 
     @Override
-    public Case insertCase() {
-        return null;
+    public boolean insertCase(Case icase) {
+        return false;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public Case updateCase(int cid, int uid, String caseName, String comment) {
+    public Case updateCase(Case icase) {
         return null;
     }
 
@@ -32,12 +32,17 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
+    public List<Case> selectCase(int uid, int cid) {
+        return null;
+    }
+
+    @Override
     public List<Case> selectCase(int uid) {
         return null;
     }
 
     @Override
-    public Case selectCaseWithPasswd(int uid, String passwd) {
+    public Case getCaseWithPasswd(int cid, String passwd) {
         return null;
     }
 

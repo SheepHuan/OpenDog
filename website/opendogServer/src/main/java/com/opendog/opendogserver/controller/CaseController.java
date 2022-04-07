@@ -12,48 +12,106 @@ import javax.servlet.http.HttpServletRequest;
 public class CaseController {
 
 
+    /*
+     * @Author opendog
+     * @Description 
+     * 暂时不实现
+     * @Date 2022/4/7 19:49
+     * @Param [request]
+     * @return com.opendog.opendogserver.utils.RetJson
+     **/
     @PostMapping(value = "add_case")
     public RetJson addCase(HttpServletRequest request){
 
         return null;
     }
 
+    /*
+     * @Author opendog
+     * @Description 
+     * @Date 2022/4/7 19:49
+     * @Param [request]
+     * @return com.opendog.opendogserver.utils.RetJson
+     **/
     @PostMapping(value = "delete_case")
     public RetJson deleteCase(HttpServletRequest request){
 
         return null;
     }
 
+    /*
+     * @Author opendog
+     * @Description
+     * @Date 2022/4/7 19:51
+     * @Param [request]
+     * @return com.opendog.opendogserver.utils.RetJson
+     **/
     @PostMapping(value = "update_case")
     public RetJson updateCase(HttpServletRequest request){
 
         return null;
     }
 
+    /*
+     * @Author opendog
+     * @Description
+     * @Date 2022/4/7 19:51
+     * @Param [request]
+     * @return com.opendog.opendogserver.utils.RetJson
+     **/
     @PostMapping(value = "select_case")
     public RetJson selectCase(HttpServletRequest request){
 
         return null;
     }
 
+    /*
+     * @Author opendog
+     * @Description
+     * @Date 2022/4/7 19:51
+     * @Param [request]
+     * @return com.opendog.opendogserver.utils.RetJson
+     **/
     @PostMapping(value = "get_case_detail")
     public RetJson getCaseDetail(HttpServletRequest request){
 
         return null;
     }
 
+    /*
+     * @Author opendog
+     * @Description
+     * @Date 2022/4/7 19:51
+     * @Param [request]
+     * @return com.opendog.opendogserver.utils.RetJson
+     **/
     @PostMapping(value = "get_case_detail_with_passwd")
     public RetJson getCaseDetailWithPasswd(HttpServletRequest request){
 
         return null;
     }
 
+    /*
+     * @Author opendog
+     * @Description
+     * @Date 2022/4/7 19:51
+     * @Param [request]
+     * @return com.opendog.opendogserver.utils.RetJson
+     **/
     @PostMapping(value = "pigeonhole_case")
     public RetJson pigeonholeCase(HttpServletRequest request){
 
         return null;
     }
 
+    /*
+     * @Author opendog
+     * @Description
+     * 暂不实现
+     * @Date 2022/4/7 19:51
+     * @Param [request]
+     * @return com.opendog.opendogserver.utils.RetJson
+     **/
     @PostMapping(value = "share_case")
     public RetJson shareCase(HttpServletRequest request){
 

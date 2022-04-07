@@ -1,10 +1,17 @@
 package com.opendog.opendogserver.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.*;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 
+@Data
+@ToString
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @TableName("tb_case")
 public class Case {
 
