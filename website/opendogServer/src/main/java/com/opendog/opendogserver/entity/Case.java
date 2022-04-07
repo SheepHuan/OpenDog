@@ -25,7 +25,7 @@ public class Case {
     int taskid;
 
     @TableField(value = "did")
-    int dataId;
+    String dataId;
 
     @TableField(value = "uid")
     int userId;
