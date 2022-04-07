@@ -1,5 +1,6 @@
 package com.opendog.opendogserver.service;
 
+import com.opendog.opendogserver.entity.Token;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,7 +13,11 @@ public interface TokenService {
      * @Param [uid]
      * @return java.lang.String
      **/
-    String allocNewToken(int uid);
+    Token allocNewToken(int uid);
+
+
+
+    Token allocTmpToken(int uid);
     
     /*
      * @Author opendog
@@ -21,7 +26,7 @@ public interface TokenService {
      * @Param [uid, token]
      * @return boolean
      **/
-    boolean checkTokenIsValid(int uid,String token);
+    boolean checkTokenIsValid(int uid,String md5);
     
     /*
      * @Author opendog
@@ -39,5 +44,14 @@ public interface TokenService {
      * @Param [uid]
      * @return java.lang.String
      **/
-    String updateToken(int uid);
+    Token updateToken(int uid, long tag, int state);
+    
+    /*
+     * @Author opendog
+     * @Description 
+     * @Date 2022/4/7 16:50
+     * @Param [uid]
+     * @return com.opendog.opendogserver.entity.Token
+     **/
+    Token selectToken(int uid);
 }

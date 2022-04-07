@@ -6,7 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 
-import java.sql.Date;
+import java.util.Date;
+
 
 @Data
 @ToString
@@ -14,19 +15,22 @@ import java.sql.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("tb_token")
+@TableName("TB_TOKEN")
 public class Token {
 
     @TableId(value = "id",type = IdType.AUTO)
     private int tokenId;
 
     @TableField(value = "uid")
-    private int userid;
+    private int userId;
 
     @TableField(value = "token")
     private String token;
 
     @TableField(value = "valid_time")
     private Date validTime;
+
+    @TableField(value = "state")
+    private int state;
 
 }
