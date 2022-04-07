@@ -61,11 +61,13 @@ fix: 修复登录界面异常
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
+
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/SheepHuan"><img src="https://avatars.githubusercontent.com/u/48245110?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Huan Yang</b></sub></a><br /><a title="Code">💻</a> <a  title="Content">🖋</a> <a title="Documentation">📖</a> <a  title="Reviewed Pull Requests">👀</a></td>   
+    <td align="center"><a href="https://github.com/SheepHuan"><img src="https://avatars.githubusercontent.com/u/48245110?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Huan Yang (杨欢)</b></sub></a><br /><a title="Code">💻</a> <a  title="Content">🖋</a> <a title="Documentation">📖</a> <a  title="Reviewed Pull Requests">👀</a> <a title="Design">🎨</a> </td>   
   </tr>
 </table>
+
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
