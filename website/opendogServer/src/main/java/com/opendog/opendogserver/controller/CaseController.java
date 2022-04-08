@@ -55,7 +55,7 @@ public class CaseController {
             int uid = Integer.parseInt(request.getParameter("uid"));
             String token = request.getParameter("token");
             //验证token合法性
-//            if (tokenService.checkTokenIsValid(uid,token))
+            if (tokenService.checkTokenIsValid(uid,token))
             {
                 Case icase = new Case();
                 String caseName = request.getParameter("caseName");
@@ -91,10 +91,10 @@ public class CaseController {
                 }
 
             }
-//            else{
-//                msg = "授权不合法";
-//                state = RetState.ERROR;
-//            }
+            else{
+                msg = "授权不合法";
+                state = RetState.ERROR;
+            }
 
 
         }catch (Exception e){
