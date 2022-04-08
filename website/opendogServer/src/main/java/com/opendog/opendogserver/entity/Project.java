@@ -24,16 +24,16 @@ import java.util.Date;
 public class Project {
 
     @TableId(value = "pid", type = IdType.AUTO)
-    int pid;
+    Integer pid;
 
     @TableField(value = "project_name")
     String projectName;
 
     @TableField(value = "uid")
-    int uid;
+    Integer uid;
 
     @TableField(value = "tid")
-    int tid;
+    Integer tid;
 
     @TableField(value = "comment")
     String comment;

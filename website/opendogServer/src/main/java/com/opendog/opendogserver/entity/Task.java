@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 
+import java.util.Date;
+
 /**
  * @className: SharedTask
  * @description: 任务类
@@ -22,14 +24,20 @@ import lombok.*;
 public class Task {
 
     @TableId(value = "tid",type = IdType.AUTO)
-    int tid;
+    Integer tid;
 
     @TableField(value = "uid")
-    int uid;
+    Integer uid;
 
     @TableField(value = "task_name")
     String taskName;
 
     @TableField(value = "comment")
     String comment;
+
+    @TableField(value = "updated_time")
+    Date updatedTime;
+
+    @TableField(value = "created_time")
+    Date createdTime;
 }

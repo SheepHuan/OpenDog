@@ -24,10 +24,10 @@ import java.util.Date;
 public class Token {
 
     @TableId(value = "id",type = IdType.AUTO)
-    private int tokenId;
+    private Integer tokenId;
 
     @TableField(value = "uid")
-    private int userId;
+    private Integer userId;
 
     @TableField(value = "token")
     private String token;

@@ -24,12 +24,12 @@ import lombok.*;
 public class SharedTask
 {
     @TableId(value = "tsid",type = IdType.AUTO)
-    int tsid;
+    Integer tsid;
 
     @TableField(value = "tid")
-    int tid;
+    Integer tid;
 
     @TableField(value = "uid")
-    int uid;
+    Integer uid;
 
 }

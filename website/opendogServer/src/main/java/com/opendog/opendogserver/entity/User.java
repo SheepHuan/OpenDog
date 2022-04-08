@@ -25,7 +25,7 @@ public class User implements Serializable {
 
     //主键自增
     @TableId(value = "uid", type = IdType.AUTO)
-    private long uid;
+    private Integer uid;
 
     @TableField(value = "user_name")
     private String userName;
@@ -44,7 +44,7 @@ public class User implements Serializable {
 
 
     @TableField(value = "role")
-    private int role;
+    private Integer role;
 
     @TableField(value = "created_time")
     private Date createdTime;

@@ -22,26 +22,26 @@ import java.util.Date;
 public class Case {
 
     @TableId(value = "cid",type = IdType.AUTO)
-    int caseId;
+    Integer caseId;
 
     @TableField(value = "pid")
-    int projectid;
+    Integer projectid;
 
     @TableField(value = "tid")
-    int taskid;
+    Integer taskid;
 
     @TableField(value = "did")
     String dataId;
 
     @TableField(value = "uid")
-    int userId;
+    Integer userId;
 
     @TableField(value = "case_name")
     String caseName;
 
     //不为空，默认填写0
     @TableField(value = "access_state")
-    int accessState;
+    Integer accessState;
 
     @TableField(value = "access_passwd")
     String accessPasswd;
