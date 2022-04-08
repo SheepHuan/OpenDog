@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.opendog.opendogserver.entity.SharedTask;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * @className: SharedTaskMapper
@@ -13,4 +16,7 @@ import org.apache.ibatis.annotations.Mapper;
  **/
 @Mapper
 public interface SharedTaskMapper extends BaseMapper<SharedTask> {
+
+    @Select("SELECT uid FROM TB_TASK_SHARED WEHERE tid=#{tid}")
+    List<Integer> selectUidByTid(int tid);
 }
