@@ -1,9 +1,12 @@
 package com.opendog.opendogserver.controller;
 
 import com.opendog.opendogserver.utils.RetJson;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,7 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/case/")
 public class CaseController {
 
-
+    @Value("${file.upload.url}")
+    private String filesDirPath;
     /*
      * @Author opendog
      * @Description 
@@ -21,7 +25,7 @@ public class CaseController {
      * @return com.opendog.opendogserver.utils.RetJson
      **/
     @PostMapping(value = "add_case")
-    public RetJson addCase(HttpServletRequest request){
+    public RetJson addCase(@RequestParam("files")MultipartFile[] files, HttpServletRequest request){
 
         return null;
     }
