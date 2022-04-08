@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 
+import java.util.Date;
+
 /**
  * @className: SharedTask
  * @description: 项目类
@@ -35,6 +37,12 @@ public class Project {
 
     @TableField(value = "comment")
     String comment;
+
+    @TableField(value = "updated_time")
+    Date updatedTime;
+
+    @TableField(value = "created_time")
+    Date createdTime;
 
 }
 
