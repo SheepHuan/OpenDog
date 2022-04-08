@@ -33,6 +33,7 @@ public class Case {
     @TableField(value = "case_name")
     String caseName;
 
+    //不为空，默认填写0
     @TableField(value = "access_state")
     int accessState;
 

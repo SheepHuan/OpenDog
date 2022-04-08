@@ -80,7 +80,8 @@ public class CaseController {
                 caseitem.setProjectid(projectId);
                 caseitem.setTaskid(taskId);
                 caseitem.setDataId(dataPath);
-
+                //默认写0
+                caseitem.setAccessState(0);
                 caseService.insertCase(caseitem);
                 msg = "上传成功";
                 state = RetState.SUCCESS;
