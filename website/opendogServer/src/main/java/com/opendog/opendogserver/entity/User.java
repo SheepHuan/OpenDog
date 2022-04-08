@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("tb_user")
+@TableName("TB_USER")
 public class User implements Serializable {
 
     //主键自增
@@ -41,10 +41,10 @@ public class User implements Serializable {
     @TableField(value = "role")
     private int role;
 
-    @TableField(value = "created_time",fill = FieldFill.INSERT)
+    @TableField(value = "created_time")
     private Date createdTime;
 
-    @TableField(value = "updated_time",fill = FieldFill.UPDATE)
+    @TableField(value = "updated_time")
     private Date updatedTime;
 
 
