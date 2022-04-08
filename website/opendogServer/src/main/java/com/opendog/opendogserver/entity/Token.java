@@ -8,7 +8,12 @@ import lombok.*;
 
 import java.util.Date;
 
-
+/**
+ * @className: SharedTask
+ * @description: 授权码类
+ * @author: opendog
+ * @date: 2022/4/8
+ **/
 @Data
 @ToString
 @Getter

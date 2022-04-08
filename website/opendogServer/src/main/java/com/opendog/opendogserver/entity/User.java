@@ -8,7 +8,12 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-
+/**
+ * @className: SharedTask
+ * @description: 用户类
+ * @author: opendog
+ * @date: 2022/4/8
+ **/
 @Data
 @ToString
 @Getter

@@ -6,6 +6,12 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Date;
 
+/**
+ * @className: SharedTask
+ * @description: 用例类
+ * @author: opendog
+ * @date: 2022/4/8
+ **/
 @Data
 @ToString
 @Getter
