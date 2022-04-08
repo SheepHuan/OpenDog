@@ -1,7 +1,16 @@
 package com.opendog.opendogserver.controller;
 
+import com.opendog.opendogserver.entity.Case;
+import com.opendog.opendogserver.service.CaseService;
+import com.opendog.opendogserver.service.TokenService;
 import com.opendog.opendogserver.utils.RetJson;
+import com.opendog.opendogserver.utils.RetState;
+import lombok.Data;
+import netscape.javascript.JSObject;
+import org.apache.tomcat.util.json.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.json.BasicJsonParser;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/case/")
@@ -16,6 +28,14 @@ public class CaseController {
 
     @Value("${file.upload.url}")
     private String filesDirPath;
+    BasicJsonParser jsonParser = new BasicJsonParser();
+
+
+    @Autowired
+    CaseService caseService;
+
+    @Autowired
+    TokenService tokenService;
     /*
      * @Author opendog
      * @Description 
@@ -26,8 +46,58 @@ public class CaseController {
      **/
     @PostMapping(value = "add_case")
     public RetJson addCase(@RequestParam("files")MultipartFile[] files, HttpServletRequest request){
+        RetState state = RetState.SUCCESS;
+        String msg = "";
+        Map<String,String> data =new HashMap<>();
 
-        return null;
+        try{
+            //获取参数
+            int uid = Integer.parseInt(request.getParameter("uid"));
+            String token = request.getParameter("token");
+            //验证token合法性
+            if (tokenService.checkTokenIsValid(uid,token))
+            {
+                String sCase = request.getParameter("case");
+                //解析String -> Map <String, Object>
+                Map<String,Object> icase=jsonParser.parseMap(sCase);
+                String caseName = (String) icase.get("caseName");
+
+                //这三个可不填
+                String comment = (String) icase.get("comment");
+                int taskId = Integer.parseInt((String) icase.get("taskId"));
+                int projectId = Integer.parseInt((String) icase.get("projectId"));
+                String dataPath = "";
+                for (MultipartFile file: files){
+                    String fileName =file.getOriginalFilename();
+                    File fileStorage = new File(filesDirPath + File.separator + fileName);
+                    //文件存入路径
+                    file.transferTo(fileStorage);
+                    dataPath = fileName;
+                }
+                Case caseitem = new Case();
+                caseitem.setCaseName(caseName);
+                caseitem.setComment(comment);
+                caseitem.setProjectid(projectId);
+                caseitem.setTaskid(taskId);
+                caseitem.setDataId(dataPath);
+
+                caseService.insertCase(caseitem);
+                msg = "上传成功";
+                state = RetState.SUCCESS;
+            }
+            else{
+                msg = "授权不合法";
+                state = RetState.ERROR;
+            }
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            msg = "异常报错";
+            state = RetState.ERROR;
+        }
+
+        return RetJson.retJson(state,msg,data);
     }
 
     /*
