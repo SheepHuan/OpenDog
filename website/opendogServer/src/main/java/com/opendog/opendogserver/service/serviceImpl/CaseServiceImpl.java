@@ -1,19 +1,32 @@
 package com.opendog.opendogserver.service.serviceImpl;
 
 import com.opendog.opendogserver.entity.Case;
+import com.opendog.opendogserver.mapper.CaseMapper;
 import com.opendog.opendogserver.service.CaseService;
 import com.opendog.opendogserver.utils.CaseSelectCondition;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class CaseServiceImpl implements CaseService {
-
+    @Autowired
+    CaseMapper caseMapper;
 
     @Override
     public boolean insertCase(Case icase) {
-        return false;
+        try{
+            icase.setCreatedTime(new Date(System.currentTimeMillis()));
+            icase.setUpdatedTime(new Date(System.currentTimeMillis()));
+            caseMapper.insert(icase);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     @Override

@@ -7,4 +7,5 @@ package com.opendog.opendogserver.utils;
  * @date: 2022/4/7
  **/
 public class CaseSelectCondition {
+
 }

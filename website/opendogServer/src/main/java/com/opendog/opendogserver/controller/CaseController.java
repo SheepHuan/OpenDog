@@ -55,17 +55,22 @@ public class CaseController {
             int uid = Integer.parseInt(request.getParameter("uid"));
             String token = request.getParameter("token");
             //验证token合法性
-            if (tokenService.checkTokenIsValid(uid,token))
+//            if (tokenService.checkTokenIsValid(uid,token))
             {
-                String sCase = request.getParameter("case");
-                //解析String -> Map <String, Object>
-                Map<String,Object> icase=jsonParser.parseMap(sCase);
-                String caseName = (String) icase.get("caseName");
-
+                Case icase = new Case();
+                String caseName = request.getParameter("caseName");
+                icase.setCaseName(caseName);
                 //这三个可不填
-                String comment = (String) icase.get("comment");
-                int taskId = Integer.parseInt((String) icase.get("taskId"));
-                int projectId = Integer.parseInt((String) icase.get("projectId"));
+                String comment = request.getParameter("comment");
+                if (!comment.equals("None"))
+                    icase.setComment(comment);
+                String taskId = request.getParameter("taskId");
+                if (!taskId.equals("None"))
+                    icase.setTaskid(Integer.parseInt(taskId));
+                String projectId = request.getParameter("projectId");
+                if (!projectId.equals("None"))
+                    icase.setProjectid(Integer.parseInt(projectId));
+
                 String dataPath = "";
                 for (MultipartFile file: files){
                     String fileName =file.getOriginalFilename();
@@ -74,22 +79,22 @@ public class CaseController {
                     file.transferTo(fileStorage);
                     dataPath = fileName;
                 }
-                Case caseitem = new Case();
-                caseitem.setCaseName(caseName);
-                caseitem.setComment(comment);
-                caseitem.setProjectid(projectId);
-                caseitem.setTaskid(taskId);
-                caseitem.setDataId(dataPath);
+                icase.setDataId(dataPath);
                 //默认写0
-                caseitem.setAccessState(0);
-                caseService.insertCase(caseitem);
-                msg = "上传成功";
-                state = RetState.SUCCESS;
+                icase.setAccessState(0);
+                if (caseService.insertCase(icase)){
+                    msg = "上传成功";
+                    state = RetState.SUCCESS;
+                }else {
+                    msg = "数据库插入失败";
+                    state = RetState.ERROR;
+                }
+
             }
-            else{
-                msg = "授权不合法";
-                state = RetState.ERROR;
-            }
+//            else{
+//                msg = "授权不合法";
+//                state = RetState.ERROR;
+//            }
 
 
         }catch (Exception e){

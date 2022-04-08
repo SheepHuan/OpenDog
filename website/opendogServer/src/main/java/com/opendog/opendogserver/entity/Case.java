@@ -12,7 +12,7 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("tb_case")
+@TableName("TB_CASE")
 public class Case {
 
     @TableId(value = "cid",type = IdType.AUTO)
@@ -43,9 +43,9 @@ public class Case {
     @TableField(value = "comment")
     String comment;
 
-    @TableField(value = "updated_time",fill = FieldFill.INSERT)
+    @TableField(value = "updated_time")
     Date updatedTime;
 
-    @TableField(value = "created_time",fill = FieldFill.UPDATE)
+    @TableField(value = "created_time")
     Date createdTime;
 }
