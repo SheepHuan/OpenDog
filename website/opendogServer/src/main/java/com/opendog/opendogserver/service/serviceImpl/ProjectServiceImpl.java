@@ -21,8 +21,16 @@ public class ProjectServiceImpl implements ProjectService {
     public Project insertProject(Project project) {
         project.setCreatedTime(new Date(System.currentTimeMillis()));
         project.setUpdatedTime(new Date(System.currentTimeMillis()));
+        //插入前,检查该用户是否有同名 project
+        Map<String,Object> map = new HashMap<>();
+        map.put("uid",project.getUid());
+        map.put("project_name",project.getProjectName());
+        List<Project> selected = selectProjectByMap(map);
+        if (selected!=null)
+            return null;
+
         try{
-            projectMapper.insert(project);
+           projectMapper.insert(project);
             return project;
         }catch (Exception e){
             e.printStackTrace();
@@ -47,12 +55,23 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public Project updateProjectTaskID(int pid, int tid) {
+        Project project = selectProjetByPid(pid);
+        if (project !=null){
+            project.setTid(tid);
+            return updateProject(project);
+        }else{
+            return null;
+        }
+
+    }
+
+    @Override
     public Project updateProjectName(int pid, String projectName) {
         Project project = selectProjetByPid(pid);
         if (project !=null){
             project.setProjectName(projectName);
-            projectMapper.updateById(project);
-            return project;
+            return updateProject(project);
         }else{
             return null;
         }
@@ -64,8 +83,56 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = selectProjetByPid(pid);
         if (project !=null){
             project.setComment(comment);
-            projectMapper.updateById(project);
-            return project;
+            return updateProject(project);
+        }else{
+            return null;
+        }
+    }
+
+    @Override
+    public Project updateProjectNameAndComment(int pid, String projectName, String comment) {
+        Project project = selectProjetByPid(pid);
+        if (project !=null){
+            project.setProjectName(projectName);
+            project.setComment(comment);
+            return updateProject(project);
+        }else{
+            return null;
+        }
+    }
+
+    @Override
+    public Project updateProjectNameAndTid(int pid, String projectName, int tid) {
+        Project project = selectProjetByPid(pid);
+        if (project !=null){
+            project.setProjectName(projectName);
+            project.setTid(tid);
+            return updateProject(project);
+        }else{
+            return null;
+        }
+    }
+
+    @Override
+    public Project updateProjectCommentAndTid(int pid, String comment, int tid) {
+        Project project = selectProjetByPid(pid);
+        if (project !=null){
+            project.setComment(comment);
+            project.setTid(tid);
+            return updateProject(project);
+        }else{
+            return null;
+        }
+    }
+
+    @Override
+    public Project updateProjectNameAndCommentAndTid(int pid, String projectName, String comment, int tid) {
+        Project project = selectProjetByPid(pid);
+        if (project !=null){
+            project.setComment(comment);
+            project.setProjectName(projectName);
+            project.setTid(tid);
+            return updateProject(project);
         }else{
             return null;
         }
@@ -107,5 +174,14 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project selectProjetByPid(int pid) {
         return projectMapper.selectById(pid);
+    }
+
+    @Override
+    public List<Project> selectProjectByMap(Map<String, Object> map) {
+        List<Project> projectList=projectMapper.selectByMap(map);
+        if (projectList.size()!=0)
+            return projectList;
+        else
+            return null;
     }
 }
