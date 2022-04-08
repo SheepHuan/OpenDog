@@ -68,6 +68,15 @@ public interface CaseService {
      * @return java.util.List<com.opendog.opendogserver.entity.Case>
      **/
     List<Case> selectCase(int uid);
+    
+    /*
+     * @Author opendog
+     * @Description 
+     * @Date 2022/4/9 0:48
+     * @Param [pid]
+     * @return java.util.List<com.opendog.opendogserver.entity.Case>
+     **/
+    List<Case> selectCasesByPid(int pid);
 
     /*
      * @Author opendog
