@@ -14,6 +14,7 @@ public interface TaskService {
     /*
      * @Author opendog
      * @Description
+     * 向表插入一个Task记录
      * @Date 2022/4/8 21:51
      * @Param [task]
      * @return com.opendog.opendogserver.entity.Task
@@ -23,6 +24,7 @@ public interface TaskService {
     /*
      * @Author opendog
      * @Description
+     * 更新Task记录
      * @Date 2022/4/8 21:51
      * @Param [task]
      * @return com.opendog.opendogserver.entity.Task
@@ -32,6 +34,7 @@ public interface TaskService {
     /*
      * @Author opendog
      * @Description
+     * 更新Task#comment
      * @Date 2022/4/8 21:51
      * @Param [tid, comment]
      * @return com.opendog.opendogserver.entity.Task
@@ -104,6 +107,7 @@ public interface TaskService {
     /*
      * @Author opendog
      * @Description
+     * 将某些用户从Task中移除
      * @Date 2022/4/8 21:51
      * @Param [tid, uids]
      * @return boolean[]
@@ -113,6 +117,7 @@ public interface TaskService {
     /*
      * @Author opendog
      * @Description
+     * 向Task中添加一些用户
      * @Date 2022/4/8 21:51
      * @Param [tid, uids]
      * @return boolean[]
@@ -121,8 +126,9 @@ public interface TaskService {
 
     /*
      * @Author opendog
-     * @Description 
-     * @Date 2022/4/8 22:12
+     * @Description
+     * 根据uid 和 tid 选取task
+     * @Date 2022/4/8 22:23
      * @Param [uid, tid]
      * @return com.opendog.opendogserver.entity.SharedTask
      **/
