@@ -1,8 +1,11 @@
 package com.opendog.opendogserver.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.opendog.opendogserver.entity.Case;
 import com.opendog.opendogserver.service.CaseService;
 import com.opendog.opendogserver.service.TokenService;
+import com.opendog.opendogserver.utils.IOUtils;
+import com.opendog.opendogserver.utils.MHttpHeader;
 import com.opendog.opendogserver.utils.RetJson;
 import com.opendog.opendogserver.utils.RetState;
 import lombok.Data;
@@ -19,7 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -116,7 +121,42 @@ public class CaseController {
     @PostMapping(value = "delete_case")
     public RetJson deleteCase(HttpServletRequest request){
 
-        return null;
+        RetState state = RetState.SUCCESS;
+        String msg = "完全删除";
+        Map<String, List<Integer>> data =new HashMap<>();
+        List<Integer> isUndeleted = new ArrayList<>();
+        data.put("failure",isUndeleted);
+        try{
+            //获取请求头
+            MHttpHeader mHttpHeader = MHttpHeader.getHeadFromRequest(request);
+            int uid = mHttpHeader.getUid();
+            String token = mHttpHeader.getToken();
+            //将json转为JSONObject
+            JSONObject params = IOUtils.stringConvert2Json(IOUtils.inputStream2String(request.getInputStream()));
+            Integer[] caseIds =  params.getJSONArray("caseId").toArray(new Integer[ params.getJSONArray("caseId").size()]);
+            List<Case> cases=new ArrayList<>();
+            if (tokenService.checkTokenIsValid(uid,token)){
+                for (Integer caseId : caseIds) {
+                    if (!caseService.deleteCase(cases)) {
+                        state = RetState.ERROR;
+                        msg = "未完全删除成功";
+                        isUndeleted.add(caseId);
+                    }
+                }
+                if (isUndeleted.size()>0)
+                    data.put("failure",isUndeleted);
+            }else{
+                state = RetState.ERROR;
+                msg = "授权不通过";
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            state = RetState.ERROR;
+            msg = "参数异常";
+        }
+
+        return  RetJson.retJson(state,msg,data);
     }
 
     /*

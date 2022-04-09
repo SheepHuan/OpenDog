@@ -162,7 +162,6 @@ public class UserServiceImpl implements UserService {
         updateWrapper.set("answer", user.getAnswer());
         updateWrapper.set("update_time", user.getUpdatedTime());
         long rows = userMapper.update(user,updateWrapper);
-
         if(rows > 0){
             return user;
         }
