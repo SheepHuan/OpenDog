@@ -47,7 +47,7 @@ public class ProjectController {
     public RetJson createProject(HttpServletRequest request){
         RetState state = RetState.SUCCESS;
         String msg = "创建成功";
-        Map<String,String> data =new HashMap<>();
+        Map<String,Project> data =new HashMap<>();
 
         try{
             MHttpHeader mHttpHeader = MHttpHeader.getHeadFromRequest(request);
@@ -64,8 +64,9 @@ public class ProjectController {
                 project.setComment(comment);
                 project =  projectService.insertProject(project);
                 if ( project!=null ){
+                    state = RetState.SUCCESS;
                     msg = "成功";
-                    //TODO 返回project数据
+                    data.put("project",project);
                 }else {
                     state = RetState.ERROR;
                     msg = "数据库操作异常";
