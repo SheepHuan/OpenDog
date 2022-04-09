@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.config.TaskManagementConfigUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -46,7 +43,7 @@ public class TaskServiceImpl implements TaskService {
 
         Map <String,Object> map = new HashMap<>();
         map.put("uid",task.getUid());
-        map.put("taskName",task.getTaskName());
+        map.put("task_name",task.getTaskName());
 
         List<Task> sameNameTasks = taskMapper.selectByMap(map);
         boolean haveSameNameTask = false;
@@ -153,6 +150,22 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public boolean[] removeUsersFromTask(int tid, Integer[] uids) {
+        boolean[] isRemoved = new boolean[uids.length];
+        for (int i=0 ; i <uids.length;i++){
+            SharedTask sharedTask = selectSharedTaskByUidAndTid(uids[i],tid);
+            if (sharedTask!=null)
+            {
+                sharedTaskMapper.deleteById(sharedTask);
+                isRemoved[i] = true;
+            }else{
+                isRemoved[i] = false;
+            }
+        }
+        return isRemoved;
+    }
+
+    @Override
     public boolean[] addUsersToTask(int tid, int[] uids) {
         boolean[] isRemoved = new boolean[uids.length];
         for (int i=0 ; i <uids.length;i++){
@@ -198,6 +211,22 @@ public class TaskServiceImpl implements TaskService {
         List<SharedTask> sharedTasks = sharedTaskMapper.selectByMap(map);
         if (sharedTasks.size()>0)
             return sharedTasks.get(0);
+        return null;
+    }
+
+    @Override
+    public List<Integer> selectUserFromSharedTask(int tid) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("tid",tid);
+        List<SharedTask> sharedTasks = sharedTaskMapper.selectByMap(map);
+        List<Integer> uids =  new ArrayList<>();
+        if (sharedTasks.size()>0)
+        {
+            for (SharedTask task : sharedTasks){
+                uids.add(task.getUid());
+            }
+            return uids;
+        }
         return null;
     }
 

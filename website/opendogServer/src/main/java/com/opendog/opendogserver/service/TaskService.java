@@ -117,6 +117,15 @@ public interface TaskService {
 
     /*
      * @Author opendog
+     * @Description 
+     * @Date 2022/4/9 15:09
+     * @Param [tid, uids]
+     * @return boolean[]
+     **/
+    boolean[] removeUsersFromTask(int tid, Integer[] uids);
+    
+    /*
+     * @Author opendog
      * @Description
      * 向Task中添加一些用户
      * @Date 2022/4/8 21:51
@@ -144,5 +153,5 @@ public interface TaskService {
      **/
     SharedTask selectSharedTaskByUidAndTid(int uid,int tid);
 
-
+    List<Integer> selectUserFromSharedTask(int tid);
 }
