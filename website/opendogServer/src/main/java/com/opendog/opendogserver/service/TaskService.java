@@ -25,6 +25,7 @@ public interface TaskService {
      * @Author opendog
      * @Description
      * 更新Task记录
+     * 确保uid 下无 命名冲突
      * @Date 2022/4/8 21:51
      * @Param [task]
      * @return com.opendog.opendogserver.entity.Task
@@ -123,6 +124,15 @@ public interface TaskService {
      * @return boolean[]
      **/
     boolean[] addUsersToTask(int tid, int[] uids);
+
+    /*
+     * @Author opendog
+     * @Description 
+     * @Date 2022/4/9 11:25
+     * @Param [tid, uids]
+     * @return boolean[]
+     **/
+    boolean[] addUsersToTask(int tid, Integer[] uids);
 
     /*
      * @Author opendog

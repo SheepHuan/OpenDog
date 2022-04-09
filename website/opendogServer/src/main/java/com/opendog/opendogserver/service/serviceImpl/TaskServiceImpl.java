@@ -43,9 +43,27 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task updateTask(Task task) {
-        task.setUpdatedTime(new Date(System.currentTimeMillis()));
-        taskMapper.updateById(task);
-        return task;
+
+        Map <String,Object> map = new HashMap<>();
+        map.put("uid",task.getUid());
+        map.put("taskName",task.getTaskName());
+
+        List<Task> sameNameTasks = taskMapper.selectByMap(map);
+        boolean haveSameNameTask = false;
+        for (Task sameNameTask : sameNameTasks){
+            if (sameNameTask.getTid() != task.getTid()) {
+                haveSameNameTask = true;
+                break;
+            }
+        }
+         if (!haveSameNameTask){
+             task.setUpdatedTime(new Date(System.currentTimeMillis()));
+             taskMapper.updateById(task);
+             return task;
+         }else {
+             return null;
+         }
+
     }
 
     @Override
@@ -136,6 +154,25 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public boolean[] addUsersToTask(int tid, int[] uids) {
+        boolean[] isRemoved = new boolean[uids.length];
+        for (int i=0 ; i <uids.length;i++){
+            SharedTask sharedTask = selectSharedTaskByUidAndTid(uids[i],tid);
+            if (sharedTask==null)
+            {
+                sharedTask = new SharedTask();
+                sharedTask.setTid(tid);
+                sharedTask.setUid(uids[i]);
+                sharedTaskMapper.insert(sharedTask);
+                isRemoved[i] = true;
+            }else{
+                isRemoved[i] = false;
+            }
+        }
+        return isRemoved;
+    }
+
+    @Override
+    public boolean[] addUsersToTask(int tid, Integer[] uids) {
         boolean[] isRemoved = new boolean[uids.length];
         for (int i=0 ; i <uids.length;i++){
             SharedTask sharedTask = selectSharedTaskByUidAndTid(uids[i],tid);
