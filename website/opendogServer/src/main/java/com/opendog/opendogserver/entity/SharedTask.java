@@ -20,7 +20,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("TB_TASK_SHARED")
+@TableName("TB_SHARED_TASK")
 public class SharedTask
 {
     @TableId(value = "tsid",type = IdType.AUTO)
