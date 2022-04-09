@@ -60,6 +60,11 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
+    public List<Case> selectCaseByTid(int tid) {
+        return null;
+    }
+
+    @Override
     public Case getCaseWithPasswd(int cid, String passwd) {
         return null;
     }
