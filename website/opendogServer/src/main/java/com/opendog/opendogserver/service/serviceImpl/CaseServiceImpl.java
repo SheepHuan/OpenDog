@@ -2,7 +2,6 @@ package com.opendog.opendogserver.service.serviceImpl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.opendog.opendogserver.entity.Case;
-import com.opendog.opendogserver.entity.Project;
 import com.opendog.opendogserver.mapper.CaseMapper;
 import com.opendog.opendogserver.service.CaseService;
 import com.opendog.opendogserver.utils.CaseSelectCondition;
@@ -34,9 +33,9 @@ public class CaseServiceImpl implements CaseService {
     public boolean deleteCase(List<Case> cases) {
         //构建一个查询的wrapper
         QueryWrapper<Case> wrapper = new QueryWrapper<>();
-        List<Case> list=caseMapper.selectList(wrapper);
+        caseMapper.selectList(wrapper);
         try{
-            if(list!=null){
+            if(cases.size()!=0){
                 caseMapper.delete(wrapper);
                 return true;
             }
@@ -49,9 +48,10 @@ public class CaseServiceImpl implements CaseService {
 
     @Override
     public Case updateCase(Case icase) {
+        icase.setCreatedTime(new Date(System.currentTimeMillis()));
         icase.setUpdatedTime(new Date(System.currentTimeMillis()));
         try{
-            caseMapper.deleteById(icase);
+            caseMapper.updateById(icase);
             return icase;
         }catch (Exception e) {
             e.printStackTrace();
@@ -106,6 +106,17 @@ public class CaseServiceImpl implements CaseService {
 
     @Override
     public Case getCaseWithPasswd(int cid, String password) {
+        QueryWrapper<Case> wrapper=new QueryWrapper<>();
+        wrapper.eq("cid",cid).eq("password",password);
+        Case case1=caseMapper.selectOne(wrapper);
+        try{
+            if(case1!=null){
+                return case1;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
         return null;
     }
 

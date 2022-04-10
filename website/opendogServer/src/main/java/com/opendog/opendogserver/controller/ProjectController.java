@@ -318,7 +318,6 @@ public class ProjectController {
                 for (int pid : projectIds) {
                     Project project = projectService.selectProjetByPid(pid);
                     if (project == null) {
-
                         isUnselected.add(pid);
                     }else{
                         isSelected.add(project);

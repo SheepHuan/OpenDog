@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -323,6 +324,8 @@ public class UserController {
         RetState state = RetState.SUCCESS;
         String msg = "";
         Map<String, List<Object>> data =new HashMap<>();
+        data.put("failure",new ArrayList<>());
+        data.put("success",new ArrayList<>());
         try {
             //获取请求头
             MHttpHeader mHttpHeader = MHttpHeader.getHeadFromRequest(request);
