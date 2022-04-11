@@ -22,7 +22,7 @@ https://perfdog.qq.com/
 
 我们希望采用的type包括
 
-- feat：新的功能或特征
+- feat：新的功能或特征.
 - fix：修复bug，可以在footer部分加上 close #bugNo
 - update: 更新某个功能或者特征
 - docs：针对文档的修改，比如修改Readme也算
