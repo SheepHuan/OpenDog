@@ -1,10 +1,15 @@
 package com.opendog.opendogserver.controller;
 
 
+<<<<<<< HEAD
 import com.opendog.opendogserver.common.CONSTANT;
 import com.opendog.opendogserver.entity.User;
 import com.opendog.opendogserver.service.UserService;
 import com.opendog.opendogserver.utils.MHttpHeader;
+=======
+import com.opendog.opendogserver.entity.User;
+import com.opendog.opendogserver.service.UserService;
+>>>>>>> upstream/main
 import com.opendog.opendogserver.utils.RetJson;
 import com.opendog.opendogserver.utils.RetState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+=======
+import java.util.HashMap;
+>>>>>>> upstream/main
 import java.util.Map;
 
 @RestController
@@ -83,6 +92,7 @@ public class UserController {
      **/
     @PostMapping(value = "checkField")
     public RetJson checkField(HttpServletRequest request){
+<<<<<<< HEAD
         RetState state = RetState.SUCCESS;
         String msg = "字段合法!";
         Map<String,String> data =new HashMap<>();
@@ -101,6 +111,10 @@ public class UserController {
             msg = "字段非法失败";
         }
         return RetJson.retJson(state,msg,data);
+=======
+
+        return null;
+>>>>>>> upstream/main
     }
 
     /*
@@ -113,6 +127,7 @@ public class UserController {
      **/
     @PostMapping(value = "login")
     public RetJson login(HttpServletRequest request){
+<<<<<<< HEAD
         RetState state = RetState.SUCCESS;
         String msg = "成功登录 ";
         Map<String,User> data =new HashMap<>();
@@ -130,6 +145,10 @@ public class UserController {
             msg = "登录失败";
         }
         return RetJson.retJson(state,msg,data);
+=======
+
+        return null;
+>>>>>>> upstream/main
     }
 
     /*
@@ -142,11 +161,16 @@ public class UserController {
      **/
     @PostMapping(value = "loginout")
     public RetJson loginout(HttpServletRequest request){
+<<<<<<< HEAD
         request.getSession().removeAttribute(CONSTANT.LOGIN_USER);
         RetState state = RetState.SUCCESS;
         String msg = "退出成功";
         Map<String,String> data =new HashMap<>();
         return RetJson.retJson(state,msg,data);
+=======
+
+        return null;
+>>>>>>> upstream/main
     }
 
     /*
@@ -159,6 +183,7 @@ public class UserController {
      **/
     @PostMapping(value = "get_safe_question")
     public RetJson getSafeQuestion(HttpServletRequest request){
+<<<<<<< HEAD
         RetState state = RetState.SUCCESS;
         String msg = "";
         Map<String,String> data =new HashMap<>();
@@ -184,6 +209,10 @@ public class UserController {
             msg = "获取问题失败";
         }
         return RetJson.retJson(state,msg,data);
+=======
+
+        return null;
+>>>>>>> upstream/main
     }
 
     /*
@@ -196,6 +225,7 @@ public class UserController {
      **/
     @PostMapping(value = "check_question_answer")
     public RetJson checkQuestionAnswer(HttpServletRequest request){
+<<<<<<< HEAD
         RetState state = RetState.SUCCESS;
         String msg = "";
         Map<String,String> data =new HashMap<>();
@@ -223,6 +253,10 @@ public class UserController {
             msg = "确认答案失败";
         }
         return RetJson.retJson(state,msg,data);
+=======
+
+        return null;
+>>>>>>> upstream/main
     }
 
     /*
@@ -235,6 +269,7 @@ public class UserController {
      **/
     @PostMapping(value = "reset_forget_password")
     public RetJson resetForgetPassword(HttpServletRequest request){
+<<<<<<< HEAD
         RetState state = RetState.SUCCESS;
         String msg = "";
         Map<String,String> data =new HashMap<>();
@@ -266,6 +301,10 @@ public class UserController {
             msg = "重置失败";
         }
         return RetJson.retJson(state,msg,data);
+=======
+
+        return null;
+>>>>>>> upstream/main
     }
 
     /*
@@ -278,6 +317,7 @@ public class UserController {
      **/
     @PostMapping(value = "reset_password")
     public RetJson resetPassword(HttpServletRequest request){
+<<<<<<< HEAD
         RetState state = RetState.SUCCESS;
         String msg = "";
         Map<String,String> data =new HashMap<>();
@@ -309,6 +349,10 @@ public class UserController {
             msg = "重置失败";
         }
         return RetJson.retJson(state,msg,data);
+=======
+
+        return null;
+>>>>>>> upstream/main
     }
 
     /*
@@ -320,6 +364,7 @@ public class UserController {
      **/
     @PostMapping(value = "get_detail")
     public RetJson getUserDetail(HttpServletRequest request){
+<<<<<<< HEAD
         User loginUser = (User) request.getSession().getAttribute(CONSTANT.LOGIN_USER);
         RetState state = RetState.SUCCESS;
         String msg = "";
@@ -348,6 +393,10 @@ public class UserController {
 
         return RetJson.retJson(state,msg,data);
 
+=======
+
+        return null;
+>>>>>>> upstream/main
     }
 
     /*
@@ -360,6 +409,7 @@ public class UserController {
      **/
     @PostMapping(value = "modify_detail")
     public RetJson modifyDetail(HttpServletRequest request){
+<<<<<<< HEAD
         RetState state = RetState.SUCCESS;
         String msg = "";
         Map<String,String> data =new HashMap<>();
@@ -393,5 +443,9 @@ public class UserController {
             msg = "更新失败";
         }
         return RetJson.retJson(state,msg,data);
+=======
+
+        return null;
+>>>>>>> upstream/main
     }
 }

@@ -42,6 +42,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project updateProject(Project project) {
+<<<<<<< HEAD
         project.setUpdatedTime(new Date(System.currentTimeMillis()));
         try{
             projectMapper.updateById(project);
@@ -52,6 +53,30 @@ public class ProjectServiceImpl implements ProjectService {
             return null;
         }
 
+=======
+
+        //检查是否有同名
+        Map<String,Object> map = new HashMap<>();
+        map.put("projectName",project.getProjectName());
+        map.put("uid",project.getUid());
+        List<Project> sameNameProjects = projectMapper.selectByMap(map);
+        boolean haveSameNameProject = false;
+        for (Project sameNameProject: sameNameProjects){
+            if (sameNameProject.getPid() != project.getPid()){
+                haveSameNameProject = true;
+            }
+        }
+        if (!haveSameNameProject){
+            project.setUpdatedTime(new Date(System.currentTimeMillis()));
+                projectMapper.updateById(project);
+                return project;
+
+        }else{
+            return null;
+        }
+
+
+>>>>>>> upstream/main
     }
 
     @Override

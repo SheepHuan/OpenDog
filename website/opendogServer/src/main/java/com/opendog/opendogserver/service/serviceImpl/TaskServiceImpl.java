@@ -11,10 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.config.TaskManagementConfigUtils;
 import org.springframework.stereotype.Service;
 
+<<<<<<< HEAD
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+=======
+import java.util.*;
+>>>>>>> upstream/main
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -43,9 +47,33 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task updateTask(Task task) {
+<<<<<<< HEAD
         task.setUpdatedTime(new Date(System.currentTimeMillis()));
         taskMapper.updateById(task);
         return task;
+=======
+
+        Map <String,Object> map = new HashMap<>();
+        map.put("uid",task.getUid());
+        map.put("task_name",task.getTaskName());
+
+        List<Task> sameNameTasks = taskMapper.selectByMap(map);
+        boolean haveSameNameTask = false;
+        for (Task sameNameTask : sameNameTasks){
+            if (sameNameTask.getTid() != task.getTid()) {
+                haveSameNameTask = true;
+                break;
+            }
+        }
+         if (!haveSameNameTask){
+             task.setUpdatedTime(new Date(System.currentTimeMillis()));
+             taskMapper.updateById(task);
+             return task;
+         }else {
+             return null;
+         }
+
+>>>>>>> upstream/main
     }
 
     @Override
@@ -135,6 +163,25 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+<<<<<<< HEAD
+=======
+    public boolean[] removeUsersFromTask(int tid, Integer[] uids) {
+        boolean[] isRemoved = new boolean[uids.length];
+        for (int i=0 ; i <uids.length;i++){
+            SharedTask sharedTask = selectSharedTaskByUidAndTid(uids[i],tid);
+            if (sharedTask!=null)
+            {
+                sharedTaskMapper.deleteById(sharedTask);
+                isRemoved[i] = true;
+            }else{
+                isRemoved[i] = false;
+            }
+        }
+        return isRemoved;
+    }
+
+    @Override
+>>>>>>> upstream/main
     public boolean[] addUsersToTask(int tid, int[] uids) {
         boolean[] isRemoved = new boolean[uids.length];
         for (int i=0 ; i <uids.length;i++){
@@ -154,6 +201,28 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+<<<<<<< HEAD
+=======
+    public boolean[] addUsersToTask(int tid, Integer[] uids) {
+        boolean[] isRemoved = new boolean[uids.length];
+        for (int i=0 ; i <uids.length;i++){
+            SharedTask sharedTask = selectSharedTaskByUidAndTid(uids[i],tid);
+            if (sharedTask==null)
+            {
+                sharedTask = new SharedTask();
+                sharedTask.setTid(tid);
+                sharedTask.setUid(uids[i]);
+                sharedTaskMapper.insert(sharedTask);
+                isRemoved[i] = true;
+            }else{
+                isRemoved[i] = false;
+            }
+        }
+        return isRemoved;
+    }
+
+    @Override
+>>>>>>> upstream/main
     public SharedTask selectSharedTaskByUidAndTid(int uid, int tid) {
         Map<String,Object> map = new HashMap<>();
         map.put("uid",uid);
@@ -164,5 +233,24 @@ public class TaskServiceImpl implements TaskService {
         return null;
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+    public List<Integer> selectUserFromSharedTask(int tid) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("tid",tid);
+        List<SharedTask> sharedTasks = sharedTaskMapper.selectByMap(map);
+        List<Integer> uids =  new ArrayList<>();
+        if (sharedTasks.size()>0)
+        {
+            for (SharedTask task : sharedTasks){
+                uids.add(task.getUid());
+            }
+            return uids;
+        }
+        return null;
+    }
+
+>>>>>>> upstream/main
 
 }
