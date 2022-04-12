@@ -37,6 +37,9 @@ public interface TokenService {
      **/
     boolean checkTokenIsValid(int uid,String md5);
 
+
+
+
     /*
      * @Author opendog
      * @Description

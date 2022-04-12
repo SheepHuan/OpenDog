@@ -27,4 +27,9 @@ public class MHttpHeader {
         mHttpHeader.setUid(request.getIntHeader("uid"));
         return mHttpHeader;
     }
+
+    public static String getTmpToken(HttpServletRequest request){
+
+        return request.getHeader("tmpToken");
+    }
 }
