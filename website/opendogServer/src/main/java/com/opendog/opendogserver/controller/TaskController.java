@@ -1,11 +1,11 @@
 package com.opendog.opendogserver.controller;
 
 
-<<<<<<< HEAD
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-=======
+
 import com.alibaba.fastjson.JSONObject;
 import com.opendog.opendogserver.entity.Case;
 import com.opendog.opendogserver.entity.Project;
@@ -28,13 +28,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.*;
 
->>>>>>> upstream/main
+
 @RestController
 @RequestMapping("/task/")
 public class TaskController {
 
-<<<<<<< HEAD
-=======
+
+
     @Autowired
     TokenService tokenService;
 
@@ -74,16 +74,16 @@ public class TaskController {
 
                     data.put("task",task);
                 }else{
-                    state = RetState.DATABASEERROR;
+                    state = RetState.ERROR;
                 }
             }else{
-                state = RetState.UNAUTHORIZED;
+                state = RetState.ERROR;
             }
 
 
         }catch (Exception e){
             e.printStackTrace();
-            state = RetState.BADPARAMS;
+            state = RetState.ERROR;
         }
 
         return RetJson.retJson(state,data);
@@ -117,7 +117,7 @@ public class TaskController {
                         }
                     }else{
                         isAllDeleted = false;
-                        state = RetState.DATABASEERROR;
+                        state = RetState.ERROR;
                         failDeleted.add(tid);
                     }
                 }
@@ -128,13 +128,13 @@ public class TaskController {
                 }
 
             }else{
-                state = RetState.UNAUTHORIZED;
+                state = RetState.ERROR;
             }
 
 
         }catch (Exception e){
             e.printStackTrace();
-            state = RetState.BADPARAMS;
+            state = RetState.ERROR;
         }
 
         return RetJson.retJson(state,data);
@@ -163,22 +163,22 @@ public class TaskController {
                     if (task!=null){
                         data.put("task",task);
                     }else{
-                        state  = RetState.DATABASEERROR;
+                        state  = RetState.ERROR;
                     }
 
                 }else{
-                    state  = RetState.DATABASEERROR;
+                    state  = RetState.ERROR;
                 }
 
 
             }else{
-                state = RetState.UNAUTHORIZED;
+                state = RetState.ERROR;
             }
 
 
         }catch (Exception e){
             e.printStackTrace();
-            state = RetState.BADPARAMS;
+            state = RetState.ERROR;
         }
 
         return RetJson.retJson(state,data);
@@ -200,13 +200,13 @@ public class TaskController {
                 data.put("taskList", Objects.requireNonNullElseGet(tasks, ArrayList::new));
 
             }else{
-                state = RetState.UNAUTHORIZED;
+                state = RetState.ERROR;
             }
 
 
         }catch (Exception e){
             e.printStackTrace();
-            state = RetState.BADPARAMS;
+            state = RetState.ERROR;
         }
 
         return RetJson.retJson(state,data);
@@ -231,13 +231,13 @@ public class TaskController {
 
 
             }else{
-                state = RetState.UNAUTHORIZED;
+                state = RetState.ERROR;
             }
 
 
         }catch (Exception e){
             e.printStackTrace();
-            state = RetState.BADPARAMS;
+            state = RetState.ERROR;
         }
 
         return RetJson.retJson(state,data);
@@ -261,13 +261,13 @@ public class TaskController {
                 data.put("caseList", Objects.requireNonNullElseGet(cases, ArrayList::new));
 
             }else{
-                state = RetState.UNAUTHORIZED;
+                state = RetState.ERROR;
             }
 
 
         }catch (Exception e){
             e.printStackTrace();
-            state = RetState.BADPARAMS;
+            state = RetState.ERROR;
         }
 
         return RetJson.retJson(state,data);
@@ -292,17 +292,17 @@ public class TaskController {
                 {
                     data.put("task",task);
                 }else {
-                    state = RetState.DATABASEERROR;
+                    state = RetState.ERROR;
                 }
 
             }else{
-                state = RetState.UNAUTHORIZED;
+                state = RetState.ERROR;
             }
 
 
         }catch (Exception e){
             e.printStackTrace();
-            state = RetState.BADPARAMS;
+            state = RetState.ERROR;
         }
 
         return RetJson.retJson(state,data);
@@ -339,13 +339,13 @@ public class TaskController {
                 data.put("failure",failAdded);
                 data.put("success",successAdded);
             }else{
-                state = RetState.UNAUTHORIZED;
+                state = RetState.ERROR;
             }
 
 
         }catch (Exception e){
             e.printStackTrace();
-            state = RetState.BADPARAMS;
+            state = RetState.ERROR;
         }
 
         return RetJson.retJson(state,data);
@@ -370,13 +370,13 @@ public class TaskController {
                 data.put("uid", Objects.requireNonNullElseGet(uids, ArrayList::new));
 
             }else{
-                state = RetState.UNAUTHORIZED;
+                state = RetState.ERROR;
             }
 
 
         }catch (Exception e){
             e.printStackTrace();
-            state = RetState.BADPARAMS;
+            state = RetState.ERROR;
         }
 
         return RetJson.retJson(state,data);
@@ -420,16 +420,16 @@ public class TaskController {
                 data.put("success",successRemove);
 
             }else{
-                state = RetState.UNAUTHORIZED;
+                state = RetState.ERROR;
             }
 
 
         }catch (Exception e){
             e.printStackTrace();
-            state = RetState.BADPARAMS;
+            state = RetState.ERROR;
         }
 
         return RetJson.retJson(state,data);
     }
->>>>>>> upstream/main
+
 }

@@ -70,7 +70,6 @@
             <version>1.2.80</version>
         </dependency>
 
-<<<<<<< HEAD
         <!-- StringUtils -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -84,8 +83,7 @@
             <version>23.0</version>
         </dependency>
 
-=======
->>>>>>> upstream/main
+
     </dependencies>
 
     <build>

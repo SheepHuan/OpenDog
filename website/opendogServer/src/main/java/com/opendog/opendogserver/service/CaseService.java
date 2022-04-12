@@ -72,17 +72,16 @@ public interface CaseService {
     /*
      * @Author opendog
      * @Description 
-<<<<<<< HEAD
+
      * @Date 2022/4/9 0:48
-=======
+
      * @Date 2022/4/9 9:55
->>>>>>> upstream/main
+
      * @Param [pid]
      * @return java.util.List<com.opendog.opendogserver.entity.Case>
      **/
     List<Case> selectCasesByPid(int pid);
-<<<<<<< HEAD
-=======
+
     
     /*
      * @Author opendog
@@ -92,7 +91,7 @@ public interface CaseService {
      * @return java.util.List<com.opendog.opendogserver.entity.Case>
      **/
     List<Case> selectCaseByTid(int tid);
->>>>>>> upstream/main
+
 
     /*
      * @Author opendog

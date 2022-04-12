@@ -1,5 +1,6 @@
 package com.opendog.opendogserver.entity;
 
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -20,11 +21,9 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-<<<<<<< HEAD
-@TableName("TB_TASK_SHARED")
-=======
+
 @TableName("TB_SHARED_TASK")
->>>>>>> upstream/main
+
 public class SharedTask
 {
     @TableId(value = "tsid",type = IdType.AUTO)

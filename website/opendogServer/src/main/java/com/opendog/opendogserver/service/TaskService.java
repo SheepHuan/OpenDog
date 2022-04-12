@@ -25,10 +25,10 @@ public interface TaskService {
      * @Author opendog
      * @Description
      * 更新Task记录
-<<<<<<< HEAD
-=======
+
+
      * 确保uid 下无 命名冲突
->>>>>>> upstream/main
+
      * @Date 2022/4/8 21:51
      * @Param [task]
      * @return com.opendog.opendogserver.entity.Task
@@ -120,8 +120,8 @@ public interface TaskService {
 
     /*
      * @Author opendog
-<<<<<<< HEAD
-=======
+
+
      * @Description 
      * @Date 2022/4/9 15:09
      * @Param [tid, uids]
@@ -131,7 +131,7 @@ public interface TaskService {
     
     /*
      * @Author opendog
->>>>>>> upstream/main
+
      * @Description
      * 向Task中添加一些用户
      * @Date 2022/4/8 21:51
@@ -142,8 +142,8 @@ public interface TaskService {
 
     /*
      * @Author opendog
-<<<<<<< HEAD
-=======
+
+
      * @Description 
      * @Date 2022/4/9 11:25
      * @Param [tid, uids]
@@ -153,7 +153,7 @@ public interface TaskService {
 
     /*
      * @Author opendog
->>>>>>> upstream/main
+
      * @Description
      * 根据uid 和 tid 选取task
      * @Date 2022/4/8 22:23
@@ -162,9 +162,9 @@ public interface TaskService {
      **/
     SharedTask selectSharedTaskByUidAndTid(int uid,int tid);
 
-<<<<<<< HEAD
 
-=======
+
+
     List<Integer> selectUserFromSharedTask(int tid);
->>>>>>> upstream/main
+
 }

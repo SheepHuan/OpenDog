@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -47,11 +48,9 @@ public class ProjectController {
     public RetJson createProject(HttpServletRequest request){
         RetState state = RetState.SUCCESS;
         String msg = "创建成功";
-<<<<<<< HEAD
-        Map<String,String> data =new HashMap<>();
-=======
+
         Map<String,Project> data =new HashMap<>();
->>>>>>> upstream/main
+
 
         try{
             MHttpHeader mHttpHeader = MHttpHeader.getHeadFromRequest(request);
@@ -68,14 +67,14 @@ public class ProjectController {
                 project.setComment(comment);
                 project =  projectService.insertProject(project);
                 if ( project!=null ){
-<<<<<<< HEAD
+
                     msg = "成功";
                     //TODO 返回project数据
-=======
+
                     state = RetState.SUCCESS;
                     msg = "成功";
                     data.put("project",project);
->>>>>>> upstream/main
+
                 }else {
                     state = RetState.ERROR;
                     msg = "数据库操作异常";
@@ -328,10 +327,10 @@ public class ProjectController {
                 for (int pid : projectIds) {
                     Project project = projectService.selectProjetByPid(pid);
                     if (project == null) {
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/main
+
+
+
                         isUnselected.add(pid);
                     }else{
                         isSelected.add(project);

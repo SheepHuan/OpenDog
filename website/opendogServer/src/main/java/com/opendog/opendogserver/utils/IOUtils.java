@@ -32,7 +32,7 @@ public class IOUtils {
         return JSON.parseObject(s);
     }
 
-    public static void array(JSONArray array,Object [] dst){
+    public static void array(JSONArray array, Object [] dst){
         array.toArray(new Object[array.size()]);
     }
 }
