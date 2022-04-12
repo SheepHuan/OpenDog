@@ -39,7 +39,11 @@ public interface UserService {
      * @Param [userName, passwd]
      * @return com.opendog.opendogserver.entity.User
      **/
+<<<<<<< HEAD
+    User login(String userName, String password);
+=======
     User login(String userName, String passwd);
+>>>>>>> upstream/main
 
 
     /*

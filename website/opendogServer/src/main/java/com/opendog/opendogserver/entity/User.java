@@ -7,6 +7,10 @@ import lombok.*;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
+<<<<<<< HEAD
+import java.time.LocalDateTime;
+=======
+>>>>>>> upstream/main
 
 /**
  * @className: SharedTask
@@ -47,10 +51,17 @@ public class User implements Serializable {
     private Integer role;
 
     @TableField(value = "created_time")
+<<<<<<< HEAD
+    private LocalDateTime createdTime;
+
+    @TableField(value = "updated_time")
+    private LocalDateTime updatedTime;
+=======
     private Date createdTime;
 
     @TableField(value = "updated_time")
     private Date updatedTime;
+>>>>>>> upstream/main
 
 
 }

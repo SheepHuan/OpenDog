@@ -11,7 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.config.TaskManagementConfigUtils;
 import org.springframework.stereotype.Service;
 
+<<<<<<< HEAD
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+=======
 import java.util.*;
+>>>>>>> upstream/main
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -40,6 +47,11 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task updateTask(Task task) {
+<<<<<<< HEAD
+        task.setUpdatedTime(new Date(System.currentTimeMillis()));
+        taskMapper.updateById(task);
+        return task;
+=======
 
         Map <String,Object> map = new HashMap<>();
         map.put("uid",task.getUid());
@@ -61,6 +73,7 @@ public class TaskServiceImpl implements TaskService {
              return null;
          }
 
+>>>>>>> upstream/main
     }
 
     @Override
@@ -150,6 +163,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+<<<<<<< HEAD
+=======
     public boolean[] removeUsersFromTask(int tid, Integer[] uids) {
         boolean[] isRemoved = new boolean[uids.length];
         for (int i=0 ; i <uids.length;i++){
@@ -166,6 +181,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+>>>>>>> upstream/main
     public boolean[] addUsersToTask(int tid, int[] uids) {
         boolean[] isRemoved = new boolean[uids.length];
         for (int i=0 ; i <uids.length;i++){
@@ -185,6 +201,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+<<<<<<< HEAD
+=======
     public boolean[] addUsersToTask(int tid, Integer[] uids) {
         boolean[] isRemoved = new boolean[uids.length];
         for (int i=0 ; i <uids.length;i++){
@@ -204,6 +222,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+>>>>>>> upstream/main
     public SharedTask selectSharedTaskByUidAndTid(int uid, int tid) {
         Map<String,Object> map = new HashMap<>();
         map.put("uid",uid);
@@ -214,6 +233,8 @@ public class TaskServiceImpl implements TaskService {
         return null;
     }
 
+<<<<<<< HEAD
+=======
     @Override
     public List<Integer> selectUserFromSharedTask(int tid) {
         Map<String,Object> map = new HashMap<>();
@@ -230,5 +251,6 @@ public class TaskServiceImpl implements TaskService {
         return null;
     }
 
+>>>>>>> upstream/main
 
 }
