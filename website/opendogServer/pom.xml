@@ -70,6 +70,22 @@
             <version>1.2.80</version>
         </dependency>
 
+<<<<<<< HEAD
+        <!-- StringUtils -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <!-- Guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>23.0</version>
+        </dependency>
+
+=======
+>>>>>>> upstream/main
     </dependencies>
 
     <build>

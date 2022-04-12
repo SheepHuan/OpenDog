@@ -1,6 +1,11 @@
 package com.opendog.opendogserver.controller;
 
 
+<<<<<<< HEAD
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+=======
 import com.alibaba.fastjson.JSONObject;
 import com.opendog.opendogserver.entity.Case;
 import com.opendog.opendogserver.entity.Project;
@@ -23,10 +28,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.*;
 
+>>>>>>> upstream/main
 @RestController
 @RequestMapping("/task/")
 public class TaskController {
 
+<<<<<<< HEAD
+=======
     @Autowired
     TokenService tokenService;
 
@@ -423,4 +431,5 @@ public class TaskController {
 
         return RetJson.retJson(state,data);
     }
+>>>>>>> upstream/main
 }

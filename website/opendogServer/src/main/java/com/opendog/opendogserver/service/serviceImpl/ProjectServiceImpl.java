@@ -42,6 +42,18 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project updateProject(Project project) {
+<<<<<<< HEAD
+        project.setUpdatedTime(new Date(System.currentTimeMillis()));
+        try{
+            projectMapper.updateById(project);
+
+            return project;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+=======
 
         //检查是否有同名
         Map<String,Object> map = new HashMap<>();
@@ -64,6 +76,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
 
+>>>>>>> upstream/main
     }
 
     @Override
