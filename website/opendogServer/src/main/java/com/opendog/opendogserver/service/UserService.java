@@ -31,6 +31,8 @@ public interface UserService {
      **/
     boolean checkFiled(User user);
 
+    boolean isExistUserName(String userName);
+
     /*
      * @Author opendog
      * @Description
@@ -41,9 +43,6 @@ public interface UserService {
      **/
 
     User login(String userName, String password);
-
-
-
 
     /*
      * @Author opendog
@@ -83,7 +82,7 @@ public interface UserService {
      * @Param [userName, oldPassword, newPassword]
      * @return boolean
      **/
-    boolean resetPassword(String userName,String oldPassword,String newPassword);
+    boolean resetPassword(int uid,String oldPassword,String newPassword);
 
     /*
      * @Author opendog
@@ -103,5 +102,8 @@ public interface UserService {
      * @return com.opendog.opendogserver.entity.User
      **/
     User updateUserDetail(String userName,String passwd,String email,String question,String answer);
+
+
+    User selectUserByName(String userName);
 
 }
