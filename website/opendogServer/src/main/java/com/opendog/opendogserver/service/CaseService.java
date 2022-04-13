@@ -58,7 +58,7 @@ public interface CaseService {
      * @Param [uid, cid]
      * @return java.util.List<com.opendog.opendogserver.entity.Case>
      **/
-    List<Case> selectCase(int uid,int cid);
+    Case selectCase(int uid,int cid);
 
     /*
      * @Author opendog

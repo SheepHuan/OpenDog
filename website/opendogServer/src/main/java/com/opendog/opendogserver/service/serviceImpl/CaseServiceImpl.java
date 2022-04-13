@@ -60,7 +60,6 @@ public class CaseServiceImpl implements CaseService {
     @Override
     public Case updateCase(Case icase) {
 
-        icase.setCreatedTime(new Date(System.currentTimeMillis()));
         icase.setUpdatedTime(new Date(System.currentTimeMillis()));
         try{
             caseMapper.updateById(icase);
@@ -89,18 +88,16 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public List<Case> selectCase(int uid, int cid) {
+    public Case selectCase(int uid, int cid) {
 
         Map<String,Object> map = new HashMap<>();
         map.put("uid",uid);
         map.put("cid",cid);
         List<Case> caseList=caseMapper.selectByMap(map);
         if (caseList.size()!=0)
-            return caseList;
+            return caseList.get(0);
         else
             return null;
-
-
     }
 
     @Override
@@ -148,6 +145,11 @@ public class CaseServiceImpl implements CaseService {
 
     @Override
     public List<Case> selectCaseByTid(int tid) {
+        Map <String,Object> map = new HashMap<>();
+        map.put("tid",tid);
+        List<Case> cases = caseMapper.selectByMap(map);
+        if (cases.size()>0)
+            return cases;
         return null;
     }
 

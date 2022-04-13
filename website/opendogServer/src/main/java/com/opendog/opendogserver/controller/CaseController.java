@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.*;
 import java.io.File;
 
 import java.util.ArrayList;
@@ -36,15 +37,8 @@ import java.util.Map;
 @RequestMapping("/case/")
 public class CaseController {
 
-
-    //@Value("${file.upload.url}")
-
     @Value( "${file.upload.url}")
     private String filesDirPath;
-
-
-    BasicJsonParser jsonParser = new BasicJsonParser();
-
 
     @Autowired
     CaseService caseService;
@@ -77,14 +71,13 @@ public class CaseController {
                 icase.setCaseName(caseName);
                 //这三个可不填
                 String comment = request.getParameter("comment");
-                if (!comment.equals("None"))
-                    icase.setComment(comment);
+
                 String taskId = request.getParameter("taskId");
-                if (!taskId.equals("None"))
-                    icase.setTaskid(Integer.parseInt(taskId));
+
                 String projectId = request.getParameter("projectId");
-                if (!projectId.equals("None"))
-                    icase.setProjectid(Integer.parseInt(projectId));
+                icase.setComment(comment);
+                icase.setTaskid(Integer.parseInt(taskId));
+                icase.setProjectid(Integer.parseInt(projectId));
 
                 String dataPath = "";
                 for (MultipartFile file: files){
@@ -260,9 +253,8 @@ public class CaseController {
             MHttpHeader mHttpHeader = MHttpHeader.getHeadFromRequest(request);
             int uid = mHttpHeader.getUid();
             String token = mHttpHeader.getToken();
-            JSONObject params = IOUtils.stringConvert2Json(IOUtils.inputStream2String(request.getInputStream()));
             if (tokenService.checkTokenIsValid(uid,token)){
-                List<Case> caseList=new ArrayList<>();
+                List<Case> caseList=caseService.selectCase(uid);
                 if (caseList.size()!=0){
                     state = RetState.SUCCESS;
                     msg = "case存在";
@@ -301,15 +293,14 @@ public class CaseController {
         RetState state=RetState.SUCCESS;
         String msg="更新成功!";
         Map<String,List<Object>> data =new HashMap<>();
-        //data.put("success",new ArrayList<>());
-        //data.put("failure",new ArrayList<>());
+
         try{
             MHttpHeader mHttpHeader = MHttpHeader.getHeadFromRequest(request);
             int uid = mHttpHeader.getUid();
             String token = mHttpHeader.getToken();
 
             JSONObject params = IOUtils.stringConvert2Json(IOUtils.inputStream2String(request.getInputStream()));
-            Integer[] caseIds =  params.getJSONArray("uid").toArray(new Integer[ params.getJSONArray("uid").size()]);
+            Integer[] caseIds =  params.getJSONArray("caseId").toArray(new Integer[ params.getJSONArray("caseId").size()]);
             List<Object> isUnselected = new ArrayList<>();
             List<Object> isSelected = new ArrayList<>();
             if(tokenService.checkTokenIsValid(uid,token)){
@@ -357,38 +348,30 @@ public class CaseController {
 
         RetState state=RetState.SUCCESS;
         String msg="更新成功!";
-        Map<String,List<Object>> data =new HashMap<>();
-        data.put("success",new ArrayList<>());
-        data.put("failure",new ArrayList<>());
+        Map<String,Object> data =new HashMap<>();
+
         try{
             MHttpHeader mHttpHeader = MHttpHeader.getHeadFromRequest(request);
             int uid = mHttpHeader.getUid();
             String token = mHttpHeader.getToken();
 
             JSONObject params = IOUtils.stringConvert2Json(IOUtils.inputStream2String(request.getInputStream()));
-            String password=params.getString("password");
-            Integer[] caseIds =  params.getJSONArray("uid").toArray(new Integer[ params.getJSONArray("uid").size()]);
-            List<Object> isUnselected = new ArrayList<>();
-            List<Object> isSelected = new ArrayList<>();
+            String password=params.getString("passwd");
+            int caseId = params.getInteger("caseId");
+
             if(tokenService.checkTokenIsValid(uid,token)){
-                for(int cid :caseIds){
-                    Case cases=caseService.getCaseWithPasswd(cid,password);
-                    if(cases==null){
-                        isUnselected.add(cid);
-                    }else{
-                        isSelected.add(cases);
-                    }
-                }
-                if(isUnselected.size()==0){
-                    state = RetState.SUCCESS;
-                    msg = "全部查询成功";
-                    data.put("success",isSelected);
-                }else{
+
+                Case icase=caseService.getCaseWithPasswd(caseId,password);
+                if(icase==null){
                     state = RetState.ERROR;
-                    msg = "未查询成功";
-                    data.put("success",isSelected);
-                    data.put("failure",isUnselected);
+                    msg = "查询失败";
+
+                }else{
+                    state= RetState.SUCCESS;
+                    msg = "查询成功";
+                    data.put("case",icase);
                 }
+
             }else{
                 state = RetState.ERROR;
                 msg = "授权不合法";
@@ -411,22 +394,244 @@ public class CaseController {
      **/
     @PostMapping(value = "pigeonhole_case")
     public RetJson pigeonholeCase(HttpServletRequest request){
+        RetState state=RetState.SUCCESS;
+        String msg="更新成功!";
+        Map<String,Object> data =new HashMap<>();
 
-        return null;
+        try{
+            MHttpHeader mHttpHeader = MHttpHeader.getHeadFromRequest(request);
+            int uid = mHttpHeader.getUid();
+            String token = mHttpHeader.getToken();
+            JSONObject params = IOUtils.stringConvert2Json(IOUtils.inputStream2String(request.getInputStream()));
+            int caseId = params.getInteger("caseId");
+            int projectId = params.getInteger("projectId");
+
+            if (tokenService.checkTokenIsValid(uid,token)){
+                //检查case是否存在
+                Case icase = caseService.selectCase(uid,caseId);
+                if (icase!=null){
+                    int prevPid = icase.getProjectid();
+                    if (prevPid!=0){
+                        state = RetState.ERROR;
+                        msg = String.format("以存在项目,请想从项目 %d 移除 用例 %d", prevPid,caseId);
+                    }else{
+                        icase.setProjectid(projectId);
+                        caseService.updateCase(icase);
+
+                        state = RetState.SUCCESS;
+                        msg = "成功";
+                        data.put("case",icase);
+                    }
+
+
+                }else  {
+                    state = RetState.ERROR;
+                    msg ="用例不存咋";
+                }
+
+            }else{
+                state  = RetState.ERROR;
+                msg = "授权不合法";
+            }
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            state = RetState.ERROR;
+        }
+
+        return RetJson.retJson(state,msg,data);
     }
 
-    /*
-     * @Author opendog
-     * @Description
-     * 暂不实现
-     * @Date 2022/4/7 19:51
-     * @Param [request]
-     * @return com.opendog.opendogserver.utils.RetJson
-     **/
-    @PostMapping(value = "share_case")
-    public RetJson shareCase(HttpServletRequest request){
 
-        return null;
+    @PostMapping(value = "remove_cases_from_project")
+    public RetJson removeCasesFromProject(HttpServletRequest request){
+        RetState state=RetState.SUCCESS;
+        String msg="更新成功!";
+        Map<String,List<Integer>> data =new HashMap<>();
+
+        try{
+            MHttpHeader mHttpHeader = MHttpHeader.getHeadFromRequest(request);
+            int uid = mHttpHeader.getUid();
+            String token = mHttpHeader.getToken();
+            JSONObject params = IOUtils.stringConvert2Json(IOUtils.inputStream2String(request.getInputStream()));
+            Integer[] caseIds =  params.getJSONArray("caseId").toArray(new Integer[ params.getJSONArray("caseId").size()]);
+            int projectId = params.getInteger("projectId");
+            List<Integer> success = new ArrayList<>();
+            List<Integer> failure = new ArrayList<>();
+            boolean isAllSuccess = true;
+            if (tokenService.checkTokenIsValid(uid,token)){
+                for (Integer caseId: caseIds){
+                    Case icase = caseService.selectCase(uid,caseId);
+                    if (icase!=null){
+                        if (icase.getProjectid() == projectId)
+                        {
+                            icase.setProjectid(0);
+                            success.add(caseId);
+                        }else{
+                            failure.add(caseId);
+                            isAllSuccess = false;
+                        }
+
+                    }else{
+                        failure.add(caseId);
+                        isAllSuccess = false;
+                    }
+
+                }
+                if (isAllSuccess){
+                    state = RetState.SUCCESS;
+                    msg = "全部查询成功";
+                    data.put("success",success);
+                    data.put("failure",failure);
+                }else {
+                    state = RetState.ERROR;
+                    msg = "未能全部查询成功";
+                    data.put("success",success);
+                    data.put("failure",failure);
+                }
+
+            }else {
+                state  = RetState.ERROR;
+                msg = "授权不合法";
+            }
+
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+            state = RetState.ERROR;
+        }
+        return RetJson.retJson(state,msg,data);
     }
 
+    @PostMapping(value = "get_case_data")
+    private RetJson getCaseData(HttpServletRequest request){
+        RetState state=RetState.SUCCESS;
+        String msg="更新成功!";
+        Map<String,Object> data =new HashMap<>();
+
+        try{
+            MHttpHeader mHttpHeader = MHttpHeader.getHeadFromRequest(request);
+            int uid = mHttpHeader.getUid();
+            String token = mHttpHeader.getToken();
+            JSONObject params = IOUtils.stringConvert2Json(IOUtils.inputStream2String(request.getInputStream()));
+            int caseId = params.getInteger("caseId");
+            if (tokenService.checkTokenIsValid(uid,token)){
+                Case icase = caseService.selectCase(uid,caseId);
+                if (icase!=null){
+                    String fileName = icase.getCaseName();
+                    int caseOwner = icase.getUserId();
+                    String caseFilePath = filesDirPath+File.separator + String.format("%d", caseOwner) + File.separator + fileName;
+                    System.out.println(caseFilePath);
+
+                }else{
+
+                }
+
+            }else{
+                state  = RetState.ERROR;
+                msg = "授权不合法";
+            }
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+            state = RetState.ERROR;
+        }
+
+        return RetJson.retJson(state,msg,data);
+    }
+
+
+    //TODO 未来实现用例分享
+//    @Value("${ip}")
+//    private String ip;
+//    /*
+//     * @Author opendog
+//     * @Description
+//     * 暂不实现
+//     * @Date 2022/4/7 19:51
+//     * @Param [request]
+//     * @return com.opendog.opendogserver.utils.RetJson
+//     **/
+//    @PostMapping(value = "share_case")
+//    public RetJson shareCase(HttpServletRequest request){
+//        RetState state=RetState.SUCCESS;
+//        String msg="更新成功!";
+//        Map<String,Object> data =new HashMap<>();
+//
+//        try{
+//            MHttpHeader mHttpHeader = MHttpHeader.getHeadFromRequest(request);
+//            int uid = mHttpHeader.getUid();
+//            String token = mHttpHeader.getToken();
+//            JSONObject params = IOUtils.stringConvert2Json(IOUtils.inputStream2String(request.getInputStream()));
+//            int caseId = params.getInteger("caseId");
+//            String accessPassword = params.getString("accessPassword");
+//            int accessState = params.getInteger("accessState");
+//
+//            if (tokenService.checkTokenIsValid(uid,token)){
+//                Case icase = caseService.selectCase(uid,caseId);
+//                if (icase!=null){
+//                    icase.setAccessState(1);
+//                    icase.setAccessPasswd(accessPassword);
+//                    String url = String.format("http://%s/access_case/%d_%d",ip,System.currentTimeMillis(),caseId );
+//                    icase.setAccessUrl(url);
+//
+//                    data.put("url",url);
+//                }
+//
+//            }else{
+//                state=RetState.ERROR;
+//                msg="授权不合法!";
+//
+//            }
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            state = RetState.ERROR;
+//        }
+//
+//        return RetJson.retJson(state,msg,data);
+//    }
+//
+//    @PostMapping(value = "access_case")
+//    public RetJson accessCase(HttpServletRequest request){
+//        RetState state=RetState.SUCCESS;
+//        String msg="更新成功!";
+//        Map<String,Object> data =new HashMap<>();
+//
+//        try{
+//            MHttpHeader mHttpHeader = MHttpHeader.getHeadFromRequest(request);
+//            int uid = mHttpHeader.getUid();
+//            String token = mHttpHeader.getToken();
+//            JSONObject params = IOUtils.stringConvert2Json(IOUtils.inputStream2String(request.getInputStream()));
+//            int caseId = params.getInteger("caseId");
+//            String accessPassword = params.getString("accessPassword");
+//            int accessState = params.getInteger("accessState");
+//
+//            if (tokenService.checkTokenIsValid(uid,token)){
+//                Case icase = caseService.selectCase(uid,caseId);
+//                if (icase!=null){
+//                    icase.setAccessState(1);
+//                    icase.setAccessPasswd(accessPassword);
+//                    String url = String.format("http://%s/access_case/%d_%d",ip,System.currentTimeMillis(),caseId );
+//                    icase.setAccessUrl(url);
+//
+//                    data.put("url",url);
+//                }
+//
+//            }else{
+//                state=RetState.ERROR;
+//                msg="授权不合法!";
+//
+//            }
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            state = RetState.ERROR;
+//        }
+//
+//        return RetJson.retJson(state,msg,data);
+//    }
 }

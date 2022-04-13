@@ -39,12 +39,16 @@ public class Case {
     @TableField(value = "case_name")
     String caseName;
 
-    //不为空，默认填写0
+    //不为空，默认填写0，填1表示要输入密码
     @TableField(value = "access_state")
     Integer accessState;
 
     @TableField(value = "access_passwd")
     String accessPasswd;
+
+    //这个具有唯一性,用cid
+    @TableField(value = "access_url")
+    String accessUrl;
 
     @TableField(value = "comment")
     String comment;
