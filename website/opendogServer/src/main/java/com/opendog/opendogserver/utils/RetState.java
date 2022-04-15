@@ -2,8 +2,11 @@ package com.opendog.opendogserver.utils;
 
 public enum RetState {
 
-    SUCCESS(1000,"SUCCESS"),
-    ERROR(2000,"ERROR");
+    SUCCESS(1000,"成功"),
+    ERROR(2000,"失败"),
+    UNAUTHORIZED(2001,"未授权"),
+    ILLEGALPARAMS(2002,"不合法的参数");
+
 
     private int state;
     private String description;

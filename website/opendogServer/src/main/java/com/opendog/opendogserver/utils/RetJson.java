@@ -16,7 +16,10 @@ public class RetJson {
     public static RetJson retJson(RetState state,String message,Map data){
         RetJson ret = new RetJson();
         ret.setData(data);
-        ret.setMessage(message);
+        if(!message.equals(""))
+            ret.setMessage(message);
+        else
+            ret.setMessage(state.getDescription());
         ret.setState(state.getState());
         return ret;
     }
