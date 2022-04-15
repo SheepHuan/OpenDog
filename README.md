@@ -64,9 +64,21 @@ fix: 修复登录界面异常
 
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/SheepHuan"><img src="https://avatars.githubusercontent.com/u/48245110?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Huan Yang (杨欢)</b></sub></a><br /><a title="Code">💻</a> <a  title="Content">🖋</a> <a title="Documentation">📖</a> <a  title="Reviewed Pull Requests">👀</a> <a title="Design">🎨</a> </td>   
+    <td align="center"><a href="https://github.com/SheepHuan"><img src="https://avatars.githubusercontent.com/u/48245110?v=4?s=140" width="140px;" alt=""/><br /><sub><b>Huan Yang (杨欢)</b></sub></a><br /><a title="Code">💻</a> <a  title="Content">🖋</a> <a title="Documentation">📖</a> <a  title="Reviewed Pull Requests">👀</a> <a title="Design">🎨</a> </td>    
   </tr>
+   <tr>
+    <td align="center"><a href="https://github.com/Lawlietqaq"><img src="https://avatars.githubusercontent.com/u/35335898?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Quan Wan (万全)</b></sub></a><br /><a title="Code">💻</a> </td>
+    <td align="center"><a href="https://github.com/SheepHuan"><img src="https://avatars.githubusercontent.com/u/1567563?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Haohang Jiang (蒋昊航)</b></sub></a><br /><a title="Code">💻</a></td>  
+   </tr>
+   <tr>
+    <td align="center"><a href="https://github.com/Xax-Lbj"><img src="https://avatars.githubusercontent.com/u/46435917?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Anxuan Xiong(熊安选)</b></sub></a><br /><a title="Code">💻</a> </td>
+    <td align="center"><a href="https://github.com/CoreCXY"><img src="https://avatars.githubusercontent.com/u/92657989?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Xuyang Chen (陈旭洋)</b></sub></a><br /><a title="Code">💻</a> </td>  
+    </tr>
 </table>
+
+
+​       
+
 
 
 <!-- markdownlint-restore -->
