@@ -19,7 +19,7 @@ public class TokenServiceImpl implements TokenService {
     TokenMapper tokenMapper;
 
     //有效时间30分钟
-    private final static long longValidTime = 30 * 60 * 1000;
+    private final static long longValidTime = 300 * 60 * 1000;
     private final static long shortValidTime = 5 * 60 * 1000;
 
 
@@ -123,7 +123,7 @@ public class TokenServiceImpl implements TokenService {
         Map select = new HashMap<String, Integer>();
         select.put("uid",uid);
         List<Token> tokens = tokenMapper.selectByMap(select);
-        if (tokens == null || tokens.size() == 0){
+        if (tokens.size() == 0){
             return null;
         }
         return tokens.get(0);

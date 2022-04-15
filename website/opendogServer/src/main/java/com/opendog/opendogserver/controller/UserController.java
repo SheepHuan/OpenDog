@@ -2,16 +2,12 @@ package com.opendog.opendogserver.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.opendog.opendogserver.common.CONSTANT;
 import com.opendog.opendogserver.entity.Token;
 import com.opendog.opendogserver.entity.User;
 import com.opendog.opendogserver.service.TokenService;
 import com.opendog.opendogserver.service.UserService;
 import com.opendog.opendogserver.utils.IOUtils;
 import com.opendog.opendogserver.utils.MHttpHeader;
-
-import com.opendog.opendogserver.entity.User;
-import com.opendog.opendogserver.service.UserService;
 
 import com.opendog.opendogserver.utils.RetJson;
 import com.opendog.opendogserver.utils.RetState;
@@ -21,10 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import java.util.HashMap;
 
@@ -69,11 +61,12 @@ public class UserController {
             if (userService.checkFiled(user)) {
 
                 if (userService.insertUser(user)) {
-                    state = RetState.ERROR;
-                    msg = "记录插入失败";
-                } else {
                     state = RetState.SUCCESS;
                     msg = "注册成功";
+
+                } else {
+                    state = RetState.ERROR;
+                    msg = "记录插入失败";
                 }
 
             } else {
@@ -96,11 +89,11 @@ public class UserController {
      * @Param [request]
      * @return com.opendog.opendogserver.utils.RetJson
      **/
-    @PostMapping(value = "checkField")
+    @PostMapping(value = "check_field")
     public RetJson checkField(HttpServletRequest request) {
 
         RetState state = RetState.SUCCESS;
-        String msg = "字段合法!";
+        String msg = "";
         Map<String, String> data = new HashMap<>();
 
         try {
@@ -118,17 +111,12 @@ public class UserController {
             user.setQuestion(question);
             user.setAnswer(answer);
 
-            boolean flag = userService.checkFiled(user);
-            if (!flag) {
-                state = RetState.ERROR;
-                msg = "字段非法失败";
-            } else {
-                state = RetState.SUCCESS;
-                msg = "字段合法";
+            if (!userService.checkFiled(user)) {
+                state = RetState.ILLEGALPARAMS;
+
             }
         } catch (Exception e) {
-            state = RetState.ERROR;
-            msg = "字段非法失败";
+            state = RetState.UNAUTHORIZED;
         }
         return RetJson.retJson(state, msg, data);
 
@@ -146,11 +134,11 @@ public class UserController {
     public RetJson login(HttpServletRequest request) {
 
         RetState state = RetState.SUCCESS;
-        String msg = "成功登录 ";
+        String msg = "";
         Map<String, Object> data = new HashMap<>();
         try {
             JSONObject params = IOUtils.stringConvert2Json(IOUtils.inputStream2String(request.getInputStream()));
-            String userName = params.getString("userName");
+            String userName = params.getString("username");
             String password = params.getString("password");
 
             User loginUser = userService.login(userName, password);
@@ -160,6 +148,8 @@ public class UserController {
                 data.put("token", token.getToken());
                 state = RetState.SUCCESS;
                 msg = "登录成功";
+            }else{
+                state = RetState.ERROR;
             }
         } catch (Exception e) {
             state = RetState.ERROR;
@@ -178,7 +168,7 @@ public class UserController {
      * @Param [request]
      * @return com.opendog.opendogserver.utils.RetJson
      **/
-    @PostMapping(value = "loginout")
+    @PostMapping(value = "login_out")
     public RetJson loginout(HttpServletRequest request) {
 
 
@@ -197,7 +187,6 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         return RetJson.retJson(state, msg, data);
 
@@ -220,23 +209,19 @@ public class UserController {
         Map<String, Object> data = new HashMap<>();
         try {
             JSONObject params = IOUtils.stringConvert2Json(IOUtils.inputStream2String(request.getInputStream()));
-            String userName = params.getString("userName");
+            String userName = params.getString("username");
 
             //先检查User合法性
             User user = userService.selectUserByName(userName);
-            // TODO 检查username是否存在
+
             if (user!=null) {
-                if (userService.getSafeQuestion(userName).equals(user.getQuestion())) {
-                    state = RetState.ERROR;
-                    msg = "获取问题失败";
-                } else {
-                    state = RetState.SUCCESS;
-                    msg = "获取问题成功";
-                    data.put("question",user.getQuestion());
-                }
+
+                state = RetState.SUCCESS;
+                msg = "获取问题成功";
+                data.put("question",user.getQuestion());
+
             } else {
                 state = RetState.ERROR;
-                msg = "字段合法性检查不通过";
             }
 
         } catch (Exception e) {
@@ -264,7 +249,7 @@ public class UserController {
         Map<String, Object> data = new HashMap<>();
         try {
             JSONObject params = IOUtils.stringConvert2Json(IOUtils.inputStream2String(request.getInputStream()));
-            String userName = params.getString("userName");
+            String userName = params.getString("username");
             String answer = params.getString("answer");
 
             //TODO 这里也要改先检查User合法性
@@ -308,33 +293,26 @@ public class UserController {
         String msg = "";
         Map<String, String> data = new HashMap<>();
         try {
-            String tmpToken = MHttpHeader.getTmpToken(request);
+            MHttpHeader mHttpHeader = MHttpHeader.getHeadFromRequest(request);
+            int uid = mHttpHeader.getUid();
+            String token = mHttpHeader.getToken();
+
             JSONObject params = IOUtils.stringConvert2Json(IOUtils.inputStream2String(request.getInputStream()));
-            String userName = params.getString("userName");
             String newPassword = params.getString("newPassword");
 
+            //检查token是否有效
+            if (tokenService.checkTokenIsValid(uid, token)) {
 
-            //先检查User是否存在
-            User user = userService.selectUserByName(userName);
-            if (userName!=null) {
-
-                //检查token是否有效
-                if (tokenService.checkTokenIsValid(user.getUid(), tmpToken)) {
-                    boolean flag = userService.resetForgetPassword(userName, newPassword);
-                    if (!flag) {
-                        state = RetState.ERROR;
-                        msg = "重置失败";
-                    } else {
-                        state = RetState.SUCCESS;
-                        msg = "重置成功";
-                    }
-                }else{
+                if (!userService.resetForgetPassword(uid, newPassword)) {
                     state = RetState.ERROR;
-                    msg = "授权不合法";
+                    msg = "重置失败";
+                } else {
+                    state = RetState.SUCCESS;
+                    msg = "重置成功";
                 }
-            } else {
+            }else{
                 state = RetState.ERROR;
-                msg = "用户不存在";
+                msg = "授权不合法";
             }
 
         } catch (Exception e) {
@@ -371,8 +349,8 @@ public class UserController {
 
             //先检查token合法性
             if (tokenService.checkTokenIsValid(uid, token)) {
-                boolean flag = userService.resetPassword(uid, oldPassword, newPassword);
-                if (!flag) {
+
+                if (!userService.resetPassword(uid, oldPassword, newPassword)) {
                     state = RetState.ERROR;
                     msg = "重置失败";
                 } else {
@@ -399,7 +377,7 @@ public class UserController {
      * @Param [request]
      * @return com.opendog.opendogserver.utils.RetJson
      **/
-    @PostMapping(value = "get_detail")
+    @PostMapping(value = "get_user_detail")
     public RetJson getUserDetail(HttpServletRequest request) {
         RetState state = RetState.SUCCESS;
         String msg = "";
@@ -442,7 +420,7 @@ public class UserController {
      * @Param [request]
      * @return com.opendog.opendogserver.utils.RetJson
      **/
-    @PostMapping(value = "update_detail")
+    @PostMapping(value = "update_user_detail")
     public RetJson updateDetail(HttpServletRequest request) {
 
         RetState state = RetState.SUCCESS;
@@ -450,32 +428,44 @@ public class UserController {
         Map<String, User> data = new HashMap<>();
 
         try {
+            MHttpHeader mHttpHeader = MHttpHeader.getHeadFromRequest(request);
+            int uid = mHttpHeader.getUid();
+            String token = mHttpHeader.getToken();
+
             JSONObject params = IOUtils.stringConvert2Json(IOUtils.inputStream2String(request.getInputStream()));
             //获取请求头
-            String userName = params.getString("userName");
-            String password = params.getString("password");
+            String userName = params.getString("username");
             String email = params.getString("email");
             String question = params.getString("question");
             String answer = params.getString("answer");
             User user = new User();
+            user.setUid(uid);
             user.setUserName(userName);
-            user.setPassword(password);
+            //随便设置一个通过字段检查
+            user.setPassword("xxx");
             user.setEmail(email);
             user.setQuestion(question);
             user.setAnswer(answer);
+            if (tokenService.checkTokenIsValid(uid,token)){
 
+                    User userUpdate = userService.updateUserDetail(user);
+                    if (userUpdate == null) {
+                        state = RetState.ERROR;
+                        msg = "用户未登录!";
+                    } else {
+                        state = RetState.SUCCESS;
+                        msg = "更新成功!";
+                        data.put("user",userUpdate);
+                    }
 
-            User userUpdate = userService.updateUserDetail(userName, password, email, question, answer);
-            if (userUpdate == null) {
-                state = RetState.ERROR;
-                msg = "用户未登录!";
-            } else {
-                state = RetState.SUCCESS;
-                msg = "更新成功!";
-                data.put("user",userUpdate);
+            }else{
+                state = RetState.UNAUTHORIZED;
             }
 
+
+
         } catch (Exception e) {
+            e.printStackTrace();
             state = RetState.ERROR;
             msg = "更新失败";
         }

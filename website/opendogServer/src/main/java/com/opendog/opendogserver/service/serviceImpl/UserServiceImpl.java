@@ -29,9 +29,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean insertUser(User user) {
         try{
+            user.setUpdatedTime(new Date(System.currentTimeMillis()));
+            user.setCreatedTime(new Date(System.currentTimeMillis()));
+            user.setRole(0);
             userMapper.insert(user);
             return true;
         }catch (Exception e){
+            e.printStackTrace();
             return false;
         }
     }
@@ -39,22 +43,31 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkFiled(User user) {
 
+
         boolean isLegal = true;
         if(user.getUserName().equals("")) {
            isLegal = false;
-
+            return isLegal;
         }
         if (user.getPassword().equals("")){
             isLegal = false;
-
+            return isLegal;
         }
         if(user.getEmail().equals("")){
             isLegal = false;
-
+            return isLegal;
         }
         //都为空或都不为空
-        if (!(user.getQuestion().equals("") && user.getAnswer().equals("")) && !(!user.getQuestion().equals("") && !user.getAnswer().equals(""))){
+//        System.out.println(String.format("%b\n%b", user.getQuestion().equals(""),user.getAnswer().equals("")));
+        if ((!user.getQuestion().equals("") && user.getAnswer().equals("")) || (user.getQuestion().equals("") && !user.getAnswer().equals(""))){
             isLegal = false;
+            return isLegal;
+        }
+        //检查是否重名
+        User sameNameUser = selectUserByName(user.getUserName());
+        if (sameNameUser!=null){
+            isLegal = false;
+            return isLegal;
         }
 
         return isLegal;
@@ -71,13 +84,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User login(String userName, String password) {
 
-        User loginUser = userMapper.selectOne(
+        return userMapper.selectOne(
                 Wrappers.<User>query().eq("user_name",userName).eq("passwd",password));
-        if(loginUser == null){
-            return null;
-        }
-        loginUser.setPassword("");
-        return loginUser;
 
     }
 
@@ -127,6 +135,18 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public boolean resetForgetPassword(int uid, String newPassword) {
+        User user = userMapper.selectById(uid);
+        if (user!=null){
+            user.setPassword(newPassword);
+            userMapper.updateById(user);
+            return true;
+        }
+        return false;
+
+    }
+
 
     @Override
     public boolean resetPassword(int uid, String oldPassword, String newPassword) {
@@ -156,21 +176,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUserDetail(String userName, String password, String email, String question, String answer) {
-        User user=new User();
+    public User updateUserDetail(User user) {
         user.setUpdatedTime(new Date(System.currentTimeMillis()));
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("uid",user.getUid());
-        updateWrapper.set("email",user.getEmail());
-        updateWrapper.set("question", user.getQuestion());
-        updateWrapper.set("answer", user.getAnswer());
-        updateWrapper.set("updated_time",new java.util.Date(System.currentTimeMillis()));
-        long rows = userMapper.update(user,updateWrapper);
-        if(rows > 0){
-            return user;
+        //是否存在这个user
+        User oldUser = userMapper.selectOne(updateWrapper);
+        if (oldUser!=null){
+            user.setPassword(oldUser.getPassword());
+            user.setUpdatedTime(new Date(System.currentTimeMillis()));
+            userMapper.updateById(user);
+        }else{
+            return null;
         }
 
-        return null;
+
+
+        return user;
     }
 
     @Override

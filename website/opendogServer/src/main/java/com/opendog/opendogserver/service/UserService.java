@@ -74,6 +74,8 @@ public interface UserService {
      **/
     boolean resetForgetPassword(String userName,String newPassword);
 
+    boolean resetForgetPassword(int uid,String newPassword);
+
     /*
      * @Author opendog
      * @Description
@@ -101,7 +103,7 @@ public interface UserService {
      * @Param [userName, passwd, email, question, answer]
      * @return com.opendog.opendogserver.entity.User
      **/
-    User updateUserDetail(String userName,String passwd,String email,String question,String answer);
+    User updateUserDetail(User user);
 
 
     User selectUserByName(String userName);
