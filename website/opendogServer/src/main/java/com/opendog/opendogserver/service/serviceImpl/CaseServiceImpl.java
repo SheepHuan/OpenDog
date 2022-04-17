@@ -26,6 +26,9 @@ public class CaseServiceImpl implements CaseService {
     @Override
     public boolean insertCase(Case icase) {
         try{
+            //Case 更新前保证Uid下无改名字
+
+
             icase.setCreatedTime(new Date(System.currentTimeMillis()));
             icase.setUpdatedTime(new Date(System.currentTimeMillis()));
             caseMapper.insert(icase);

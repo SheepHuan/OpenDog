@@ -17,10 +17,6 @@ import java.util.List;
 @Mapper
 public interface SharedTaskMapper extends BaseMapper<SharedTask> {
 
-
-    @Select("SELECT uid FROM TB_TASK_SHARED WEHERE tid=#{tid}")
-
     @Select("SELECT uid FROM TB_SHARED_TASK WHERE tid=#{tid}")
-
     List<Integer> selectUidByTid(int tid);
 }
