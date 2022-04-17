@@ -28,7 +28,7 @@ public interface CaseService {
      * @Param [cases]
      * @return boolean
      **/
-    boolean deleteCase(List<Case> cases);
+    boolean deleteCase(int caseIds);
 
     /*
      * @Author opendog
@@ -51,6 +51,7 @@ public interface CaseService {
      **/
     List<Case> selectCase(CaseSelectCondition caseSelectCondition);
 
+
     /*
      * @Author opendog
      * @Description
@@ -58,7 +59,7 @@ public interface CaseService {
      * @Param [uid, cid]
      * @return java.util.List<com.opendog.opendogserver.entity.Case>
      **/
-    Case selectCase(int uid,int cid);
+    Case selectCase(int cid);
 
     /*
      * @Author opendog
@@ -67,7 +68,7 @@ public interface CaseService {
      * @Param [uid]
      * @return java.util.List<com.opendog.opendogserver.entity.Case>
      **/
-    List<Case> selectCase(int uid);
+    List<Case> selectCaseByUid(int uid);
     
     /*
      * @Author opendog
@@ -91,6 +92,9 @@ public interface CaseService {
      * @return java.util.List<com.opendog.opendogserver.entity.Case>
      **/
     List<Case> selectCaseByTid(int tid);
+
+
+    Case selectCaseByName(int uid,String caseName);
 
 
     /*

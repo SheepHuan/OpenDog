@@ -27,8 +27,9 @@ public class CaseServiceImpl implements CaseService {
     public boolean insertCase(Case icase) {
         try{
             //Case 更新前保证Uid下无改名字
-
-
+            Case sameCaseName = selectCaseByName(icase.getUserId(),icase.getCaseName());
+            if (sameCaseName!=null)
+                return false;
             icase.setCreatedTime(new Date(System.currentTimeMillis()));
             icase.setUpdatedTime(new Date(System.currentTimeMillis()));
             caseMapper.insert(icase);
@@ -41,14 +42,13 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public boolean deleteCase(List<Case> cases) {
+    public boolean deleteCase(int caseId) {
 
         //构建一个查询的wrapper
-        QueryWrapper<Case> wrapper = new QueryWrapper<>();
-        caseMapper.selectList(wrapper);
+        Case icase = selectCase(caseId);
         try{
-            if(cases.size()!=0){
-                caseMapper.delete(wrapper);
+            if(icase != null){
+                caseMapper.deleteById(icase);
                 return true;
             }
         }catch (Exception e){
@@ -91,20 +91,13 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public Case selectCase(int uid, int cid) {
+    public Case selectCase(int cid) {
 
-        Map<String,Object> map = new HashMap<>();
-        map.put("uid",uid);
-        map.put("cid",cid);
-        List<Case> caseList=caseMapper.selectByMap(map);
-        if (caseList.size()!=0)
-            return caseList.get(0);
-        else
-            return null;
+       return caseMapper.selectById(cid);
     }
 
     @Override
-    public List<Case> selectCase(int uid) {
+    public List<Case> selectCaseByUid(int uid) {
 
         Map<String,Object> map = new HashMap<>();
         map.put("uid",uid);
@@ -153,6 +146,17 @@ public class CaseServiceImpl implements CaseService {
         List<Case> cases = caseMapper.selectByMap(map);
         if (cases.size()>0)
             return cases;
+        return null;
+    }
+
+    @Override
+    public Case selectCaseByName(int uid, String caseName) {
+        Map <String,Object> map = new HashMap<>();
+        map.put("uid",uid);
+        map.put("case_name",caseName);
+        List<Case> cases = caseMapper.selectByMap(map);
+        if (cases.size()>0)
+            return cases.get(0);
         return null;
     }
 

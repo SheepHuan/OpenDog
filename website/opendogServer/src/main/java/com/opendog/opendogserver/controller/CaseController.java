@@ -1,6 +1,7 @@
 package com.opendog.opendogserver.controller;
 
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.opendog.opendogserver.entity.Case;
 import com.opendog.opendogserver.entity.Project;
@@ -12,6 +13,8 @@ import com.opendog.opendogserver.utils.MHttpHeader;
 
 import com.opendog.opendogserver.utils.RetJson;
 import com.opendog.opendogserver.utils.RetState;
+import org.apache.commons.io.Charsets;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.json.BasicJsonParser;
@@ -61,8 +64,9 @@ public class CaseController {
 
         try{
             //获取参数
-            int uid = Integer.parseInt(request.getParameter("uid"));
-            String token = request.getParameter("token");
+            MHttpHeader mHttpHeader = MHttpHeader.getHeadFromRequest(request);
+            int uid = mHttpHeader.getUid();
+            String token = mHttpHeader.getToken();
             //验证token合法性
             if (tokenService.checkTokenIsValid(uid,token))
             {
@@ -71,10 +75,9 @@ public class CaseController {
                 icase.setCaseName(caseName);
                 //这三个可不填
                 String comment = request.getParameter("comment");
-
                 String taskId = request.getParameter("taskId");
-
                 String projectId = request.getParameter("projectId");
+                icase.setUserId(uid);
                 icase.setComment(comment);
                 icase.setTaskid(Integer.parseInt(taskId));
                 icase.setProjectid(Integer.parseInt(projectId));
@@ -82,7 +85,12 @@ public class CaseController {
                 String dataPath = "";
                 for (MultipartFile file: files){
                     String fileName =file.getOriginalFilename();
-                    File fileStorage = new File(filesDirPath + File.separator + fileName);
+                    //存在用户目录下
+                    File fileStorage = new File(filesDirPath + File.separator+ String.format("%d", uid)+File.separator + fileName);
+                    //检查 root/uid/ 目录是否存在
+                    if (!fileStorage.getParentFile().exists()){
+                        fileStorage.getParentFile().mkdirs();
+                    }
                     //文件存入路径
                     file.transferTo(fileStorage);
                     dataPath = fileName;
@@ -94,7 +102,7 @@ public class CaseController {
                     msg = "上传成功";
                     state = RetState.SUCCESS;
                 }else {
-                    msg = "数据库插入失败";
+                    msg = "已创建同名";
                     state = RetState.ERROR;
                 }
 
@@ -141,7 +149,7 @@ public class CaseController {
             List<Case> cases=new ArrayList<>();
             if (tokenService.checkTokenIsValid(uid,token)){
                 for (Integer caseId : caseIds) {
-                    if (!caseService.deleteCase(cases)) {
+                    if (!caseService.deleteCase(caseId)) {
                         state = RetState.ERROR;
                         msg = "未完全删除成功";
                         isUndeleted.add(caseId);
@@ -187,24 +195,23 @@ public class CaseController {
 
             //将RequestBody转为JSONObject
             JSONObject params = IOUtils.stringConvert2Json(IOUtils.inputStream2String(request.getInputStream()));
-            int cid = params.getInteger("cid");
-            int tid = params.getInteger("tid");
+            int cid = params.getInteger("caseId");
+            int tid = params.getInteger("taskId");
             String caseName = params.getString("caseName");
             String comment = params.getString("comment");
             if (tokenService.checkTokenIsValid(uid,token))
             {
                 //检查CID是否合法
-                List<Case> caseList =caseService.selectCase(uid);
-                if (caseList.size()!=0){
+                Case icase =caseService.selectCase(cid);
+                if (icase!=null){
                     if (tid > 0)
-                        caseList.get(uid).setTaskid(tid);
+                        icase.setTaskid(tid);
                     if (cid >0)
-                        caseList.get(uid).setCaseId(cid);
+                        icase.setCaseId(cid);
                     if (!caseName.equals(""))
-                        caseList.get(uid).setCaseName(caseName);
-                    if (!comment.equals(""))
-                        caseList.get(uid).setComment(comment);
-                    Case cases=caseService.updateCase(caseList.get(uid));
+                        icase.setCaseName(caseName);
+                    icase.setComment(comment);
+                    Case cases=caseService.updateCase(icase);
                     if (cases != null){
                         state = RetState.SUCCESS;
                         msg = "记录更新成功";
@@ -254,7 +261,7 @@ public class CaseController {
             int uid = mHttpHeader.getUid();
             String token = mHttpHeader.getToken();
             if (tokenService.checkTokenIsValid(uid,token)){
-                List<Case> caseList=caseService.selectCase(uid);
+                List<Case> caseList=caseService.selectCaseByUid(uid);
                 if (caseList.size()!=0){
                     state = RetState.SUCCESS;
                     msg = "case存在";
@@ -305,11 +312,11 @@ public class CaseController {
             List<Object> isSelected = new ArrayList<>();
             if(tokenService.checkTokenIsValid(uid,token)){
                 for(int cid :caseIds){
-                    List<Case> caseList=caseService.selectCase(cid);
-                    if(caseList.size()==0){
+                    Case icase=caseService.selectCase(cid);
+                    if(icase==null){
                         isUnselected.add(cid);
                     }else{
-                        isSelected.add(caseList);
+                        isSelected.add(icase);
                     }
                 }
                 if(isUnselected.size()==0){
@@ -408,7 +415,7 @@ public class CaseController {
 
             if (tokenService.checkTokenIsValid(uid,token)){
                 //检查case是否存在
-                Case icase = caseService.selectCase(uid,caseId);
+                Case icase = caseService.selectCase(caseId);
                 if (icase!=null){
                     int prevPid = icase.getProjectid();
                     if (prevPid!=0){
@@ -462,7 +469,7 @@ public class CaseController {
             boolean isAllSuccess = true;
             if (tokenService.checkTokenIsValid(uid,token)){
                 for (Integer caseId: caseIds){
-                    Case icase = caseService.selectCase(uid,caseId);
+                    Case icase = caseService.selectCase(caseId);
                     if (icase!=null){
                         if (icase.getProjectid() == projectId)
                         {
@@ -508,7 +515,7 @@ public class CaseController {
     @PostMapping(value = "get_case_data")
     private RetJson getCaseData(HttpServletRequest request){
         RetState state=RetState.SUCCESS;
-        String msg="更新成功!";
+        String msg="";
         Map<String,Object> data =new HashMap<>();
 
         try{
@@ -518,15 +525,30 @@ public class CaseController {
             JSONObject params = IOUtils.stringConvert2Json(IOUtils.inputStream2String(request.getInputStream()));
             int caseId = params.getInteger("caseId");
             if (tokenService.checkTokenIsValid(uid,token)){
-                Case icase = caseService.selectCase(uid,caseId);
+                Case icase = caseService.selectCase(caseId);
                 if (icase!=null){
                     String fileName = icase.getCaseName();
                     int caseOwner = icase.getUserId();
-                    String caseFilePath = filesDirPath+File.separator + String.format("%d", caseOwner) + File.separator + fileName;
+                    String caseFilePath = filesDirPath + File.separator+ String.format("%d", uid)+File.separator + icase.getDataId();
                     System.out.println(caseFilePath);
 
-                }else{
+                    File file = new File(caseFilePath);
+                    if (file.exists()){
+                        String content = FileUtils.readFileToString(file, "UTF-8");
+                        System.out.println(content);
+                        JSONObject object = JSON.parseObject(content);
+                        data.put("case_data",object);
+                        state = RetState.SUCCESS;
+                        msg = "获取成功";
 
+                    }else{
+                        state = RetState.ERROR;
+                        msg = "文件不存在";
+                    }
+
+                }else{
+                    state = RetState.ERROR;
+                    msg = "case 不存在";
                 }
 
             }else{
