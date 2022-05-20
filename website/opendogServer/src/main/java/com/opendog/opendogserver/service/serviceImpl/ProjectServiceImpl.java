@@ -31,7 +31,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         try{
            projectMapper.insert(project);
-            return project;
+           return project;
         }catch (Exception e){
             e.printStackTrace();
             return null;
@@ -45,7 +45,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         //检查是否有同名
         Map<String,Object> map = new HashMap<>();
-        map.put("projectName",project.getProjectName());
+        map.put("project_name",project.getProjectName());
         map.put("uid",project.getUid());
         List<Project> sameNameProjects = projectMapper.selectByMap(map);
         boolean haveSameNameProject = false;
