@@ -143,6 +143,9 @@
     <ClCompile Include="..\3rdparty\Cinder-VNM\ui\CinderImGui.cpp">
       <Filter>Blocks\vnm\ui</Filter>
     </ClCompile>
+    <ClCompile Include="OpenDogAPI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -174,6 +177,9 @@
     </ClInclude>
     <ClInclude Include="..\3rdparty\Cinder-VNM\include\CinderImGui.h">
       <Filter>Blocks\vnm\include</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenDogAPI.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

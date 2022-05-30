@@ -18,7 +18,7 @@
     <RootNamespace>perf-doctor</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>perf-doctor</ProjectName>
+    <ProjectName>OpenDog</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -61,6 +61,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)..\Bin\</OutDir>
     <TargetName>$(ProjectName)-d</TargetName>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <IncludePath>.;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugXD|x64'">
     <OutDir>$(SolutionDir)..\Bin\</OutDir>
@@ -68,12 +70,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)..\Bin\</OutDir>
+    <LibraryPath>..\..\libcurl\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\Cinder\include;..\3rdparty\Cinder-VNM\include;..\3rdparty\Cinder-VNM\ui;..\3rdparty\Cinder-VNM\ui\implot;..\3rdparty;..\3rdparty\Cinder-VNM\ui\imgui</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\include;..\..\Cinder\include;..\3rdparty\Cinder-VNM\include;..\3rdparty\Cinder-VNM\ui;..\3rdparty\Cinder-VNM\ui\implot;..\3rdparty;..\3rdparty\Cinder-VNM\ui\imgui;..\..\nlohmann</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;_DEBUG;BUILDING_LIBCURL;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader />
@@ -125,8 +128,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;..\..\Cinder\include;..\3rdparty\Cinder-VNM\include;..\3rdparty\Cinder-VNM\ui;..\3rdparty\Cinder-VNM\ui\implot;..\3rdparty;..\3rdparty\Cinder-VNM\ui\imgui</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\include;..\..\Cinder\include;..\3rdparty\Cinder-VNM\include;..\3rdparty\Cinder-VNM\ui;..\3rdparty\Cinder-VNM\ui\implot;..\3rdparty;..\3rdparty\Cinder-VNM\ui\imgui;..\..\libcurl\include;..\..\nlohmann;.</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;NDEBUG;BUILDING_LIBCURL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
@@ -141,7 +144,7 @@
       <AdditionalIncludeDirectories>"..\..\Cinder\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>cinder.lib;OpenGL32.lib;libcurl.lib;ws2_32.lib;winmm.lib;wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\3rdparty\libmixdevice\lib\Win64;"..\..\Cinder\lib\msw\$(PlatformTarget)";"..\..\Cinder\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)"</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
@@ -190,6 +193,7 @@
     <ClInclude Include="..\3rdparty\Cinder-VNM\include\TextureHelper.h" />
     <ClInclude Include="..\3rdparty\Cinder-VNM\include\TuioHelper.h" />
     <ClInclude Include="..\src\LightSpeedApp.h" />
+    <ClInclude Include="OpenDogAPI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdparty\Cinder-VNM\ui\CinderImGui.cpp" />
@@ -205,6 +209,7 @@
     <ClCompile Include="..\3rdparty\Cinder-VNM\src\AssetManager.cpp" />
     <ClCompile Include="..\3rdparty\Cinder-VNM\src\MiniConfig.cpp" />
     <ClCompile Include="..\src\LightSpeedApp.gui.cpp" />
+    <ClCompile Include="OpenDogAPI.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

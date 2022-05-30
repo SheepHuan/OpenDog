@@ -139,10 +139,10 @@ public class UserController {
         String msg = "";
         Map<String, Object> data = new HashMap<>();
         try {
+//            System.out.println(IOUtils.inputStream2String(request.getInputStream()));
             JSONObject params = IOUtils.stringConvert2Json(IOUtils.inputStream2String(request.getInputStream()));
             String userName = params.getString("username");
             String password = params.getString("password");
-
             User loginUser = userService.login(userName, password);
             if (loginUser != null) {
                 Token token=tokenService.allocNewToken(loginUser.getUid());
@@ -156,6 +156,8 @@ public class UserController {
         } catch (Exception e) {
             state = RetState.ERROR;
             msg = "登录失败";
+
+            e.printStackTrace();
         }
         return RetJson.retJson(state, msg, data);
 
@@ -181,11 +183,11 @@ public class UserController {
             MHttpHeader mHttpHeader = MHttpHeader.getHeadFromRequest(request);
             int uid = mHttpHeader.getUid();
             String token = mHttpHeader.getToken();
+
             if (!tokenService.freeToken(uid, token)) {
                 msg = "退出失败";
                 state = RetState.ERROR;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -222,7 +222,7 @@ int runCmd(const string& cmd, std::string& outOutput, bool waitForCompletion)
 }
 
 
-vector<string> PerfDoctorApp::executeIdb(string cmd, bool async, bool oneDeviceOnly)
+vector<string> PerfOpenDogApp::executeIdb(string cmd, bool async, bool oneDeviceOnly)
 {
     char fullCmd[256];
     if (oneDeviceOnly)
@@ -247,7 +247,7 @@ vector<string> PerfDoctorApp::executeIdb(string cmd, bool async, bool oneDeviceO
 #endif
 }
 
-void PerfDoctorApp::executeUnrealCmd(const string& cmd)
+void PerfOpenDogApp::executeUnrealCmd(const string& cmd)
 {
     char str[256];
     sprintf(str, "shell am broadcast -a android.intent.action.RUN -e cmd '%s'", cmd.c_str());
@@ -258,7 +258,7 @@ void PerfDoctorApp::executeUnrealCmd(const string& cmd)
         getDumpTicks();
 }
 
-vector<string> PerfDoctorApp::executeAdb(string cmd, bool oneDeviceOnly)
+vector<string> PerfOpenDogApp::executeAdb(string cmd, bool oneDeviceOnly)
 {
     static bool init = true;
     static string adbExe = "adb";
@@ -286,7 +286,7 @@ vector<string> PerfDoctorApp::executeAdb(string cmd, bool oneDeviceOnly)
 }
 
 
-bool PerfDoctorApp::refreshDeviceNames()
+bool PerfOpenDogApp::refreshDeviceNames()
 {
     mSerialNames.clear();
     mDeviceNames.clear();
@@ -398,7 +398,7 @@ bool PerfDoctorApp::refreshDeviceNames()
     return true;
 }
 
-bool PerfDoctorApp::refreshDeviceDetails_ios()
+bool PerfOpenDogApp::refreshDeviceDetails_ios()
 {
     storage.metric_storage["frame_time"].visible = false;
     storage.metric_storage["cpu_usage"].visible = false;
@@ -448,7 +448,7 @@ bool PerfDoctorApp::refreshDeviceDetails_ios()
     return true;
 }
 
-bool PerfDoctorApp::refreshDeviceDetails()
+bool PerfOpenDogApp::refreshDeviceDetails()
 {
     mAppNames.clear();
     mIsProfiling = false;
@@ -735,7 +735,7 @@ bool PerfDoctorApp::refreshDeviceDetails()
     return true;
 }
 
-bool PerfDoctorApp::startProfiler_ios(const string& pacakgeName)
+bool PerfOpenDogApp::startProfiler_ios(const string& pacakgeName)
 {
     //-o=cpu,memory,fps
     char cmd[256];
@@ -745,7 +745,7 @@ bool PerfDoctorApp::startProfiler_ios(const string& pacakgeName)
     return true;
 }
 
-bool PerfDoctorApp::capturePerfetto()
+bool PerfOpenDogApp::capturePerfetto()
 {
     if (!fs::exists(getAppPath() / "p.cfg"))
     {
@@ -762,7 +762,7 @@ bool PerfDoctorApp::capturePerfetto()
     return true;
 }
 
-bool PerfDoctorApp::captureSimpleperf()
+bool PerfOpenDogApp::captureSimpleperf()
 {
     auto ts = getTimestampForFilename();
 
@@ -771,7 +771,7 @@ bool PerfDoctorApp::captureSimpleperf()
 }
 
 
-bool PerfDoctorApp::screenshot()
+bool PerfOpenDogApp::screenshot()
 {
     auto ts = getTimestampForFilename();
     string name = APP_NAME + "-" + ts;
@@ -779,7 +779,7 @@ bool PerfDoctorApp::screenshot()
     return true;
 }
 
-void PerfDoctorApp::exportGpuTrace()
+void PerfOpenDogApp::exportGpuTrace()
 {
     auto ts = getTimestampForFilename();
     string name = mAppNames[mAppId] + ts + ".gpu.json";
@@ -788,7 +788,7 @@ void PerfDoctorApp::exportGpuTrace()
     tree.write(getAppPath() / name);
 }
 
-bool PerfDoctorApp::exportCsv()
+bool PerfOpenDogApp::exportCsv()
 {
     auto ts = getTimestampForFilename();
     string name = mAppNames[mAppId] + "-" + ts + ".csv";
@@ -908,17 +908,19 @@ bool PerfDoctorApp::exportCsv()
 
     fclose(fp);
 
+    string cmd = "cd D:\\github\\java\\OpenDog\\client\\PerfOpenDog\\data && python upload.py \""+ (getAppPath() / name).string() + "\" && pause";
+
     return true;
 }
 
-void PerfDoctorApp::trimMemory(const char* level)
+void PerfOpenDogApp::trimMemory(const char* level)
 {
     char cmd[256];
     sprintf(cmd, "shell am send-trim-memory %s %s", mAppNames[mAppId].c_str(), level);
     auto lines = executeAdb(cmd);
 }
 
-bool PerfDoctorApp::startProfiler(const string& pacakgeName)
+bool PerfOpenDogApp::startProfiler(const string& pacakgeName)
 {
     if (mIsIOSDevices[DEVICE_ID]) return startProfiler_ios(pacakgeName);
 
@@ -976,7 +978,7 @@ bool PerfDoctorApp::startProfiler(const string& pacakgeName)
     return true;
 }
 
-void PerfDoctorApp::resetPerfData()
+void PerfOpenDogApp::resetPerfData()
 {
     AdbResults results;
     while (mAdbResults.tryPopBack(&results))
@@ -1007,7 +1009,7 @@ void PerfDoctorApp::resetPerfData()
     mLabelPairs.clear();
 }
 
-bool PerfDoctorApp::stopProfiler()
+bool PerfOpenDogApp::stopProfiler()
 {
     mIsProfiling = false;
     exportCsv();
@@ -1017,7 +1019,7 @@ bool PerfDoctorApp::stopProfiler()
     return true;
 }
 
-bool PerfDoctorApp::updateProfiler(const AdbResults& results)
+bool PerfOpenDogApp::updateProfiler(const AdbResults& results)
 {
     {
         // frame time
@@ -1270,7 +1272,7 @@ bool PerfDoctorApp::updateProfiler(const AdbResults& results)
     return true;
 }
 
-int PerfDoctorApp::getPid(const string& pacakgeName)
+int PerfOpenDogApp::getPid(const string& pacakgeName)
 {
     char cmd[256];
     sprintf(cmd, "shell pidof %s", pacakgeName.c_str());
@@ -1281,7 +1283,7 @@ int PerfDoctorApp::getPid(const string& pacakgeName)
     return fromString<int>(lines[0]);
 }
 
-bool PerfDoctorApp::startApp_ios(const string& pacakgeName)
+bool PerfOpenDogApp::startApp_ios(const string& pacakgeName)
 {
     char cmd[256];
     //if (pid = getPid(pacakgeName)) // already running
@@ -1293,7 +1295,7 @@ bool PerfDoctorApp::startApp_ios(const string& pacakgeName)
     return true;
 }
 
-bool PerfDoctorApp::startApp(const string& pacakgeName)
+bool PerfOpenDogApp::startApp(const string& pacakgeName)
 {
     if (mIsIOSDevices[DEVICE_ID])
         return startApp_ios(pacakgeName);
@@ -1317,7 +1319,7 @@ bool PerfDoctorApp::startApp(const string& pacakgeName)
     return true;
 }
 
-bool PerfDoctorApp::stopApp_ios(const string& pacakgeName)
+bool PerfOpenDogApp::stopApp_ios(const string& pacakgeName)
 {
     char cmd[256];
     //if (pid = getPid(pacakgeName)) // already running
@@ -1329,7 +1331,7 @@ bool PerfDoctorApp::stopApp_ios(const string& pacakgeName)
     return true;
 }
 
-bool PerfDoctorApp::stopApp(const string& pacakgeName)
+bool PerfOpenDogApp::stopApp(const string& pacakgeName)
 {
     if (mIsIOSDevices[DEVICE_ID])
     {
@@ -1347,7 +1349,7 @@ bool PerfDoctorApp::stopApp(const string& pacakgeName)
     return true;
 }
 
-void PerfDoctorApp::updateMetricsData()
+void PerfOpenDogApp::updateMetricsData()
 {
     global_min_t = RANGE_START;
     if (!mTimestamps.empty())
@@ -1409,7 +1411,7 @@ void PerfDoctorApp::updateMetricsData()
     }
 }
 
-void PerfDoctorApp::getUnrealLog(bool openLogFile)
+void PerfOpenDogApp::getUnrealLog(bool openLogFile)
 {
     char str[256];
     sprintf(str, "pull /sdcard/UE4Game/%s/%s/Saved/Logs/%s.log", APP_FOLDER.c_str(), APP_FOLDER.c_str(), APP_FOLDER.c_str());
@@ -1421,7 +1423,7 @@ void PerfDoctorApp::getUnrealLog(bool openLogFile)
     }
 }
 
-void PerfDoctorApp::getMemReport()
+void PerfOpenDogApp::getMemReport()
 {
     auto fn = [&]() {
         char str[256];
@@ -1449,7 +1451,7 @@ void PerfDoctorApp::getMemReport()
     timeline().add(fn, timeline().getCurrentTime() + 1);
 }
 
-void PerfDoctorApp::getDumpTicks()
+void PerfOpenDogApp::getDumpTicks()
 {
     auto fn = [&]() {
         mTickFunctions.clear();
@@ -1570,7 +1572,7 @@ void PerfDoctorApp::getDumpTicks()
 
 extern void createConfigImgui(WindowRef window = getWindow(), bool autoDraw = true, bool autoRender = true);
 
-void PerfDoctorApp::setup()
+void PerfOpenDogApp::setup()
 {
     SetUnhandledExceptionFilter(unhandled_handler);
     am::addAssetDirectory(getAppPath());
@@ -1791,7 +1793,7 @@ void PerfDoctorApp::setup()
     });
 }
 
-CINDER_APP(PerfDoctorApp, RendererGl, [](App::Settings* settings) {
+CINDER_APP(PerfOpenDogApp, RendererGl, [](App::Settings* settings) {
     readConfig();
     settings->setWindowSize(APP_WIDTH, APP_HEIGHT);
     settings->setMultiTouchEnabled(false);

@@ -106,8 +106,11 @@ static ImPlotPoint label_getter(void* data, int idx)
         return ImPlotPoint(end_t, 10);
     }
 }
+/*
 
-void PerfDoctorApp::drawLeftSidePanel()
+渲染UI界面，我在这里增加了用户登录接口
+*/
+void PerfOpenDogApp::drawLeftSidePanel()
 {
     ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
     if (ImGui::BeginTabBar("DeviceTab", tab_bar_flags))
@@ -115,6 +118,9 @@ void PerfDoctorApp::drawLeftSidePanel()
 
 
         if (ImGui::BeginTabItem("User")) {
+
+
+            drawUserTab();
             ImGui::EndTabItem();
         }
 
@@ -198,7 +204,7 @@ void PerfDoctorApp::drawLeftSidePanel()
     ImGui::EndTabBar();
 }
 
-void PerfDoctorApp::drawDeviceTab()
+void PerfOpenDogApp::drawDeviceTab()
 {
     if (ImGui::Button("Refresh"))
     {
@@ -289,9 +295,10 @@ void PerfDoctorApp::drawDeviceTab()
                 }
 #endif
 
-                if (ImGui::Button("Export"))
+                if (ImGui::Button("Export&Upload"))
                 {
                     exportCsv();
+
                 }
                 if (!mSurfaceResolution.empty())
                 {
@@ -373,7 +380,45 @@ void PerfDoctorApp::drawDeviceTab()
     }
 }
 
-void PerfDoctorApp::drawPerfPanel()
+void PerfOpenDogApp::drawUserTab()
+{
+
+    //未登录的渲染出登录接口
+    // TODO 将用户名写入本地配置文件
+    // TODO C++实现HTTP请求
+    if (!IS_LOGINED) {     
+        ImGui::InputText("username", &USERNAME);
+        ImGui::InputText("password", &PASSWORD, ImGuiInputTextFlags_Password);
+        if (ImGui::Button("login"))
+        {
+           
+           string cmd = "cd D:\\github\\java\\OpenDog\\client\\PerfOpenDog\\data && python login.py "+ USERNAME + " "+ PASSWORD + " && pause";
+            //登录
+            system(cmd.c_str());
+            IS_LOGINED = true;
+
+        }
+    }
+    else {
+        ImGui::InputText("username", &USERNAME);
+       
+        if (ImGui::Button("loginout"))
+        {
+          
+            //CMD调用python脚本进行注销
+            string cmd = "cd D:\\github\\java\\OpenDog\\client\\PerfOpenDog\\data && python loginout.py && pause";
+            //登录
+            system(cmd.c_str());
+            IS_LOGINED = false;
+        }
+    }
+
+
+
+    //已登录的显示用户信息
+}
+
+void PerfOpenDogApp::drawPerfPanel()
 {
 #if 0
     for (const auto& kv : storage.span_storage)
@@ -555,7 +600,7 @@ void PerfDoctorApp::drawPerfPanel()
     }
 }
 
-void PerfDoctorApp::drawLabel()
+void PerfOpenDogApp::drawLabel()
 {
     if (ImPlot::BeginPlot("label"))
     {

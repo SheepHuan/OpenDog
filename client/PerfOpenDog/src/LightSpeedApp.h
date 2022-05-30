@@ -5,6 +5,7 @@
 #include "cinder/gl/gl.h"
 #include "cinder/Log.h"
 #include "cinder/ConcurrentCircularBuffer.h"
+//#include "OpenDogAPI.h"
 
 #ifdef MIX_DEVICE_ENABLED
 #include "MixDevice.h"
@@ -224,7 +225,7 @@ struct TickFunction
     //vector<string> prerequesities;
 };
 
-struct PerfDoctorApp : public App
+struct PerfOpenDogApp : public App
 {
     DataStorage storage;
     ImPlotContext* implotCtx = nullptr;
@@ -342,6 +343,7 @@ struct PerfDoctorApp : public App
 
     void drawLeftSidePanel();
     void drawDeviceTab();
+    void drawUserTab();
     void drawPerfPanel();
     void drawLabel();
 
