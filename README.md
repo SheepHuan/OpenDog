@@ -1,5 +1,15 @@
 # OpenDog
 
+本课程项目基本功能已经完成
+
+前端：https://github.com/Lawlietqwq/openDog-frontend-dev
+
+客户端代码：`client/`，基于C++ Cinder库构建。
+
+后端代码：`website/opendogServer`,基于`Java Spring`构建。
+
+
+
 ![logo.png](https://github.com/SheepHuan/OpenDog/blob/main/res/logo.png)
 
 ### 项目原型
