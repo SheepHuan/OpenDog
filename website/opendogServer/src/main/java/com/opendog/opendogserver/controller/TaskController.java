@@ -2,8 +2,8 @@ package com.opendog.opendogserver.controller;
 
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 
 import com.alibaba.fastjson.JSONObject;
@@ -20,7 +20,6 @@ import com.opendog.opendogserver.utils.MHttpHeader;
 import com.opendog.opendogserver.utils.RetJson;
 import com.opendog.opendogserver.utils.RetState;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.*;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/task/")
 public class TaskController {

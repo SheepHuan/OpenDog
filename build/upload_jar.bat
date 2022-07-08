@@ -1,0 +1,1 @@
+scp  ../website/openDogServer/target/server-0.0.1-SNAPSHOT.jar ecs:~/opendog/server.jar

@@ -2,9 +2,30 @@
 
 ![logo.png](https://github.com/SheepHuan/OpenDog/blob/main/res/logo.png)
 
-### 项目原型
+本课程项目基本功能已经完成
 
-https://perfdog.qq.com/
+前端：https://github.com/Lawlietqwq/openDog-frontend-dev
+
+客户端代码：`client/`，基于C++ Cinder、WebCC以及Json库构建，都是开源库。
+
+后端代码：`website/opendogServer`,基于`Java Spring`构建。
+
+## 项目简介
+
+项目原型是https://perfdog.qq.com/。perdog是腾讯提供的一个闭源的手机APP性能测试工具，它于2021年底开始由免费转为收费，本项目是想要实现一个与它功能类似的应用，包括PC客户端部分，网站及其后台部分。
+
+使用步骤：
+
+- `PC Client`部分，登录个人账户，连接手机，打开手机APP进行使用，客户端上就会实时显示手机性能状态，例如`CPU使用率`、`内存占用`等。该部分主要实现思路是通过`Android`提供的`ADB`调试工具，通过命令行读取手机内部的系统文件，获取手机状态，并在客户端部分进行处理、记录和整理。
+- `网站部分`，它提供了基本的注册、登录、查看历史数据等功能，负责记录个人用户所有的历史测试数据，并提供数据可视化。因精力有限🥱，这一部分，未实现`PerfDog`的团队协作测试功能。
+
+
+
+
+
+
+
+## 要求
 
 ### 基本编码要求
 
@@ -43,20 +64,9 @@ fix: 修复登录界面异常
 
 
 
-### 进度
-
-1. 实现一个用户接口,
-    - 登录注册 前端
-    - 后端完整的用户接口
-2. 创建Project、Case、Task，实现API
 
 
-
-
-
-
-
-### Contributors
+## Contributors
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
